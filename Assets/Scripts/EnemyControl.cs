@@ -1,0 +1,107 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyControl : MonoBehaviour
+{
+	public GameObject Player;
+	public float MinDist = 0f;
+	public float MoveSpeed = 50f;
+	public int Health = 3;
+	public GameObject ExplosionEffect;
+
+	private Transform target;
+	private Vector3 playerPos;
+	private bool damageLock = false;
+	private SpriteRenderer sr;
+	private int score;
+
+	void Start ()
+	{
+		if (Player == null) {
+			Player = GameObject.Find ("Player");
+		}
+		sr = GetComponent<SpriteRenderer> ();
+		init ();
+	}
+
+	void init ()
+	{
+		// Set up target
+		int rd = Random.Range (1, 3);
+		if (rd == 1) {
+			target = Player.GetComponent<PlayerControl> ().Black.transform;
+		} else {
+			target = Player.GetComponent<PlayerControl> ().White.transform;
+		}
+		// Set up Score
+
+		// Set up Health and Color
+		float rand = Random.Range (1f, 100f);
+		Color EnemyColor = new Color ();
+		if (rand <= 80f) {
+			Health = 1;
+			EnemyColor = new Color (255f / 255f, 118f / 255f, 118f / 255f);
+			score = Health;
+
+		} else if (rand <= 95f && rand > 80f) {
+			Health = 2;
+			EnemyColor = new Color (196f / 255f, 118f / 255f, 255f / 255f);
+			score = Health * 3;
+
+		} else {
+			Health = 3;
+			EnemyColor = new Color (118f / 255f, 130f / 255f, 255f / 255f);
+			score = Health * 4;
+
+		}
+
+		sr.color = EnemyColor;
+	}
+
+	// Update is called once per frame
+	void Update ()
+	{
+		playerPos = target.position;
+		Vector3 diff = playerPos - transform.position;
+		diff.Normalize ();
+
+		float rot_z = Mathf.Atan2 (diff.y, diff.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler (0f, 0f, rot_z - 90);
+
+		if (Vector3.Distance (transform.position, playerPos) >= MinDist) {
+			transform.position += transform.up * MoveSpeed * Time.deltaTime;
+		}
+	}
+
+	public void TakeDamage (int dmg)
+	{
+		if (!damageLock) {
+			damageLock = true;
+			Instantiate (ExplosionEffect, transform.position, Quaternion.identity);
+			StartCoroutine (unlockDamage (0.2f));
+			Health -= dmg;
+			Color bc = GetComponent<SpriteRenderer> ().color;
+			bc.a -= 0.3f;
+			GetComponent<SpriteRenderer> ().color = bc;
+			if (Health <= 0) {
+				GameManager.GM.Tryscore (score);
+				Destroy (gameObject);
+			}
+		}
+	}
+
+	IEnumerator unlockDamage (float time)
+	{
+		yield return new WaitForSeconds (time);
+		damageLock = false;
+	}
+
+	void OnTriggerEnter2D (Collider2D other)
+	{
+		if (other.gameObject.tag == "Player") {
+			other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
+			TakeDamage (Health + 10);
+		}
+	}
+}
