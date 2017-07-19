@@ -28,38 +28,35 @@ public class PlayerControl : MonoBehaviour
 	void Update ()
 	{
 		if (!StartLock) {
-			if (Input.GetMouseButton (0) && !IsPointerOverUIObject ()) {
-				touchTimer += Time.deltaTime;
-			} else if (IsPointerOverUIObject ()) {
-				touchTimer += 1f;
-			}
-			if (Input.GetMouseButtonUp (0)) {
-
-				if (touchTimer <= 0.2f) {
-					switch (turn) {
-					case 0:
-						Main = null;
-						Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-						turn = (turn + 1) % 4;
-						break;
-					case 1:
-						Main = White;
-						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-						turn = (turn + 1) % 4;
-						break;
-					case 2:
-						Main = null;
-						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-						turn = (turn + 1) % 4;
-						break;
-					case 3:
-						Main = Black;
-						Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-						turn = (turn + 1) % 4;
-						break;
+			if (Input.GetMouseButtonDown (0) && !EventSystem.current.IsPointerOverGameObject ()) {
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+				if (hit.collider != null && hit.collider.gameObject.tag == "Health") {
+					if (touchTimer <= 0.2f) {
+						switch (turn) {
+						case 0:
+							Main = null;
+							Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+							turn = (turn + 1) % 4;
+							break;
+						case 1:
+							Main = White;
+							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+							turn = (turn + 1) % 4;
+							break;
+						case 2:
+							Main = null;
+							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+							turn = (turn + 1) % 4;
+							break;
+						case 3:
+							Main = Black;
+							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+							turn = (turn + 1) % 4;
+							break;
+						}
 					}
+					touchTimer = 0f;
 				}
-				touchTimer = 0f;
 			}
 		}
 	}
@@ -89,15 +86,5 @@ public class PlayerControl : MonoBehaviour
 			Debug.Log ("Dead");
 			GameManager.GM.Restart ();
 		}
-	}
-
-	private bool IsPointerOverUIObject ()
-	{
-		var eventDataCurrentPosition = new PointerEventData (EventSystem.current) {
-			position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y)
-		};
-		var results = new List<RaycastResult> ();
-		EventSystem.current.RaycastAll (eventDataCurrentPosition, results);
-		return results.Count > 0;
 	}
 }

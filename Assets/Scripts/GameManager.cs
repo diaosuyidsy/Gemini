@@ -23,9 +23,6 @@ public class GameManager : MonoBehaviour
 	{
 		bestscore = PlayerPrefs.GetInt ("BestScore", 0);
 		BestScore.text = bestscore.ToString ();
-		// Unlock Player Control
-		Player.GetComponent<PlayerControl> ().StartLock = false;
-
 	}
 
 	public void Restart ()
@@ -46,6 +43,15 @@ public class GameManager : MonoBehaviour
 	{
 		Time.timeScale = 1f;
 		GetComponent<EnemiesSpawner> ().StartGame ();
+		// Unlock Player Control
+		StartCoroutine (Unlock ());
+	}
+
+	IEnumerator Unlock ()
+	{
+		yield return new WaitForSeconds (0f);
+		Player.GetComponent<PlayerControl> ().StartLock = false;
+		
 	}
 
 	public void PauseGame ()
