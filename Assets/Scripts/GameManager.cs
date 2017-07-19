@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager GM;
 	public Text Score;
 	public Text BestScore;
+	public GameObject Player;
 
 	private int score = 0;
 	private int bestscore;
@@ -22,6 +23,9 @@ public class GameManager : MonoBehaviour
 	{
 		bestscore = PlayerPrefs.GetInt ("BestScore", 0);
 		BestScore.text = bestscore.ToString ();
+		// Unlock Player Control
+		Player.GetComponent<PlayerControl> ().StartLock = false;
+
 	}
 
 	public void Restart ()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class PlayerControl : MonoBehaviour
 	public GameObject Main;
 	public int Health = 6;
 	public GameObject HealthO;
+	public bool StartLock = true;
 
 	private int turn = 0;
+	private float touchTimer = 0f;
 	// 0 is Black freeze, 1 is free all, 2 is White freeze, 3 is free all;
 
 	// Use this for initialization
@@ -24,58 +27,41 @@ public class PlayerControl : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		#if UNITY_EDITOR
-		if (Input.GetButtonDown ("Jump")) {
-			switch (turn) {
-			case 0:
-				Main = null;
-				Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-				turn = (turn + 1) % 4;
-				break;
-			case 1:
-				Main = White;
-				White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-				turn = (turn + 1) % 4;
-				break;
-			case 2:
-				Main = null;
-				White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-				turn = (turn + 1) % 4;
-				break;
-			case 3:
-				Main = Black;
-				Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-				turn = (turn + 1) % 4;
-				break;
+		if (!StartLock) {
+			if (Input.GetMouseButton (0) && !IsPointerOverUIObject ()) {
+				touchTimer += Time.deltaTime;
+			} else if (IsPointerOverUIObject ()) {
+				touchTimer += 1f;
+			}
+			if (Input.GetMouseButtonUp (0)) {
+
+				if (touchTimer <= 0.2f) {
+					switch (turn) {
+					case 0:
+						Main = null;
+						Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 1:
+						Main = White;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						turn = (turn + 1) % 4;
+						break;
+					case 2:
+						Main = null;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 3:
+						Main = Black;
+						Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						turn = (turn + 1) % 4;
+						break;
+					}
+				}
+				touchTimer = 0f;
 			}
 		}
-		#endif
-		foreach (Touch touch in Input.touches) {
-			switch (turn) {
-			case 0:
-				Main = null;
-				Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-				turn = (turn + 1) % 4;
-				break;
-			case 1:
-				Main = White;
-				White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-				turn = (turn + 1) % 4;
-				break;
-			case 2:
-				Main = null;
-				White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-				turn = (turn + 1) % 4;
-				break;
-			case 3:
-				Main = Black;
-				Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-				turn = (turn + 1) % 4;
-				break;
-			}
-		}
-
-
 	}
 
 	void FixedUpdate ()
@@ -103,5 +89,15 @@ public class PlayerControl : MonoBehaviour
 			Debug.Log ("Dead");
 			GameManager.GM.Restart ();
 		}
+	}
+
+	private bool IsPointerOverUIObject ()
+	{
+		var eventDataCurrentPosition = new PointerEventData (EventSystem.current) {
+			position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y)
+		};
+		var results = new List<RaycastResult> ();
+		EventSystem.current.RaycastAll (eventDataCurrentPosition, results);
+		return results.Count > 0;
 	}
 }

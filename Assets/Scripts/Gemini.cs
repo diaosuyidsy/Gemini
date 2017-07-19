@@ -19,21 +19,16 @@ public class Gemini : MonoBehaviour
 	{
 		Vector3 centiVec = transform.position - otherPart.transform.position;
 		Vector3 forceNormal = Vector3.Cross (centiVec, Vector3.forward).normalized;
-		if (rb.velocity.magnitude < maxV) {
+		if (rb.velocity.magnitude < maxV && GetComponentInParent<PlayerControl> ().Main != null) {
 			#if UNITY_EDITOR
 			rb.AddForce (forceNormal * Input.GetAxis ("Horizontal") * force * -1f);
 			#endif
-			foreach (Touch touch in Input.touches) {
-				if (touch.phase == TouchPhase.Stationary) {
-					Camera cam = Camera.main;
-					float height = 2f * cam.orthographicSize;
-					float width = height * cam.aspect;
-					Vector3 touchPos = cam.WorldToScreenPoint (touch.position);
-					if (touchPos.x >= width / 2f) {
-						rb.AddForce (forceNormal * force * -1f);
-					} else {
-						rb.AddForce (forceNormal * force);
-					}
+			if (Input.GetMouseButton (0)) {
+
+				if (Input.mousePosition.x >= Screen.width / 2f) {
+					rb.AddForce (forceNormal * force * -1f);
+				} else {
+					rb.AddForce (forceNormal * force);
 				}
 			}
 		}
