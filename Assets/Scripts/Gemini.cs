@@ -19,9 +19,13 @@ public class Gemini : MonoBehaviour
 	{
 		Vector3 centiVec = transform.position - otherPart.transform.position;
 		Vector3 forceNormal = Vector3.Cross (centiVec, Vector3.forward).normalized;
+		if (rb.velocity.magnitude > maxV) {
+			Vector2 v = rb.velocity.normalized;
+			rb.velocity = v * maxV;
+		}
 		if (rb.velocity.magnitude < maxV && GetComponentInParent<PlayerControl> ().Main != null) {
 			#if UNITY_EDITOR
-			rb.AddForce (forceNormal * Input.GetAxis ("Horizontal") * force * -1f);
+			rb.AddForce (forceNormal * Input.GetAxis ("Horizontal") * force);
 			#endif
 			if (Input.GetMouseButton (0)) {
 
