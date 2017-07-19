@@ -9,6 +9,7 @@ public class EnemyControl : MonoBehaviour
 	public float MoveSpeed = 50f;
 	public int Health = 3;
 	public GameObject ExplosionEffect;
+	public GameObject[] OrbsEffect;
 
 	private Transform target;
 	private Vector3 playerPos;
@@ -41,21 +42,15 @@ public class EnemyControl : MonoBehaviour
 		Color EnemyColor = new Color ();
 		if (rand <= 80f) {
 			Health = 1;
-			EnemyColor = new Color (255f / 255f, 118f / 255f, 118f / 255f);
 			score = Health;
-
 		} else if (rand <= 95f && rand > 80f) {
 			Health = 2;
-			EnemyColor = new Color (196f / 255f, 118f / 255f, 255f / 255f);
 			score = Health * 3;
-
 		} else {
 			Health = 3;
-			EnemyColor = new Color (118f / 255f, 130f / 255f, 255f / 255f);
 			score = Health * 4;
-
 		}
-
+		OrbsEffect [Health - 1].SetActive (true);
 		sr.color = EnemyColor;
 	}
 

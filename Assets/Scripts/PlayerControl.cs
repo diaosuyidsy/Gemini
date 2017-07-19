@@ -5,13 +5,13 @@ using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour
 {
-	
 	public GameObject Black;
 	public GameObject White;
 	public GameObject Main;
 	public int Health = 6;
 	public GameObject HealthO;
 	public bool StartLock = true;
+	public GameObject CirclePrefab;
 
 	private int turn = 0;
 	private float touchTimer = 0f;
@@ -31,6 +31,9 @@ public class PlayerControl : MonoBehaviour
 			if (Input.GetMouseButtonDown (0) && !EventSystem.current.IsPointerOverGameObject ()) {
 				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
 				if (hit.collider != null && hit.collider.gameObject.tag == "Health") {
+					// Some VFX
+					GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
+					a.transform.localPosition = new Vector3 (-0.28f, -0.01f);
 					if (touchTimer <= 0.2f) {
 						switch (turn) {
 						case 0:
