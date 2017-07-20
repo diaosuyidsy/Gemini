@@ -35,32 +35,32 @@ public class EnemyControl : MonoBehaviour
 		} else {
 			target = Player.GetComponent<PlayerControl> ().White.transform;
 		}
-		// Set up Score
+
 		// Set up Health and Color
 		float rand = Random.Range (1f, 100f);
 		Color EnemyColor = new Color ();
 		if (rand <= 80f) {
 			Health = 1;
-			score = Health;
 		} else if (rand <= 95f && rand > 80f) {
 			Health = 2;
-			score = Health * 3;
 		} else {
 			Health = 3;
-			score = Health * 4;
 		}
+		// Set up Score
+		score = Health;
+
 		OrbsEffect [Health - 1].SetActive (true);
 		sr.color = EnemyColor;
 		//Setup Speed
 		switch (EnemiesSpawner.ES.difficulty) {
 		case 1:
-			MoveSpeed = randomAround (1.8f, 0.4f);
+			MoveSpeed = randomAround (2.2f, 0.4f);
 			break;
 		case 2:
-			MoveSpeed = randomAround (2.2f, 0.6f);
+			MoveSpeed = randomAround (2.6f, 0.6f);
 			break;
 		case 3: 
-			MoveSpeed = randomAround (2.6f, 0.8f);
+			MoveSpeed = randomAround (3f, 0.8f);
 			break;
 		}
 	}

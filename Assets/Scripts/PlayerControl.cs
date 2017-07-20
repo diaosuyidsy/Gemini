@@ -35,7 +35,7 @@ public class PlayerControl : MonoBehaviour
 				if (hit.collider != null && hit.collider.gameObject.tag == "Health") {
 					// Some VFX
 					GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
-					a.transform.localPosition = new Vector3 (-0.28f, -0.01f);
+					a.transform.localPosition = new Vector3 (-0.29f, -0.14f);
 					if (touchTimer <= 0.2f) {
 						switch (turn) {
 						case 0:

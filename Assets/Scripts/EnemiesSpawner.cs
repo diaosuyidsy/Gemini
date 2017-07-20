@@ -33,7 +33,7 @@ public class EnemiesSpawner : MonoBehaviour
 		yield return new WaitForSeconds (time);
 		int rd = Random.Range (0, SpawnPoints.Length / 2);
 		Instantiate (HealOrbPrefab, SpawnPoints [rd * 2 + 1].position, Quaternion.identity, EnemyParent);
-		StartCoroutine (SpawnHealOrb (30f));
+		StartCoroutine (SpawnHealOrb (40f / difficulty));
 	}
 
 	IEnumerator Generate (float time)
