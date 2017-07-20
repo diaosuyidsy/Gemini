@@ -15,6 +15,7 @@ public class PlayerControl : MonoBehaviour
 
 	private int turn = 0;
 	private float touchTimer = 0f;
+	private bool invincible = false;
 	// 0 is Black freeze, 1 is free all, 2 is White freeze, 3 is free all;
 
 	// Use this for initialization
@@ -38,21 +39,25 @@ public class PlayerControl : MonoBehaviour
 						switch (turn) {
 						case 0:
 							Main = null;
+							invincible = true;
 							Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 							turn = (turn + 1) % 4;
 							break;
 						case 1:
 							Main = White;
+							invincible = false;
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 							turn = (turn + 1) % 4;
 							break;
 						case 2:
 							Main = null;
+							invincible = true;
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 							turn = (turn + 1) % 4;
 							break;
 						case 3:
 							Main = Black;
+							invincible = false;
 							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 							turn = (turn + 1) % 4;
 							break;
@@ -80,14 +85,21 @@ public class PlayerControl : MonoBehaviour
 
 	public void ApplyDamage (int dmg)
 	{
-		Health -= dmg;
+		if (!invincible || dmg > 50) {
+			Health -= dmg;
 
-		// Apply Damage to GUi
-		HealthO.GetComponent<HealthGUIControl> ().TakeDamage (dmg);
+			// Apply Damage to GUi
+			HealthO.GetComponent<HealthGUIControl> ().TakeDamage (dmg);
 
-		if (Health <= 0f) {
-			Debug.Log ("Dead");
-			GameManager.GM.Restart ();
+			if (Health <= 0f) {
+				Debug.Log ("Dead");
+				GameManager.GM.Restart ();
+			}
 		}
+	}
+
+	public bool isInvincible ()
+	{
+		return invincible;
 	}
 }

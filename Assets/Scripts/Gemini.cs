@@ -30,9 +30,9 @@ public class Gemini : MonoBehaviour
 			if (Input.GetMouseButton (0)) {
 
 				if (Input.mousePosition.x >= Screen.width / 2f) {
-					rb.AddForce (forceNormal * force * -1f);
-				} else {
 					rb.AddForce (forceNormal * force);
+				} else {
+					rb.AddForce (forceNormal * force * -1f);
 				}
 			}
 		}

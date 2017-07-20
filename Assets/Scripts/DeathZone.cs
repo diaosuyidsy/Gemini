@@ -7,14 +7,14 @@ public class DeathZone : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == "Player") {
-			other.gameObject.SendMessageUpwards ("ApplyDamage", 100f);
+			other.gameObject.SendMessageUpwards ("ApplyDamage", 100);
 		}
 	}
 
 	void OnCollisionEnter2D (Collision2D other)
 	{
 		if (other.gameObject.tag == "Player") {
-			other.gameObject.SendMessageUpwards ("ApplyDamage", 100f);
+			other.gameObject.SendMessageUpwards ("ApplyDamage", 100);
 		}
 	}
 

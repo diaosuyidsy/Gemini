@@ -36,7 +36,6 @@ public class EnemyControl : MonoBehaviour
 			target = Player.GetComponent<PlayerControl> ().White.transform;
 		}
 		// Set up Score
-
 		// Set up Health and Color
 		float rand = Random.Range (1f, 100f);
 		Color EnemyColor = new Color ();
@@ -52,6 +51,24 @@ public class EnemyControl : MonoBehaviour
 		}
 		OrbsEffect [Health - 1].SetActive (true);
 		sr.color = EnemyColor;
+		//Setup Speed
+		switch (EnemiesSpawner.ES.difficulty) {
+		case 1:
+			MoveSpeed = randomAround (1.8f, 0.4f);
+			break;
+		case 2:
+			MoveSpeed = randomAround (2.2f, 0.6f);
+			break;
+		case 3: 
+			MoveSpeed = randomAround (2.6f, 0.8f);
+			break;
+		}
+		Debug.Log (MoveSpeed);
+	}
+
+	float randomAround (float target, float range)
+	{
+		return Random.Range (target - range, target + range);
 	}
 
 	// Update is called once per frame
@@ -96,7 +113,10 @@ public class EnemyControl : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
-			TakeDamage (Health + 10);
+			if (!other.gameObject.GetComponentInParent<PlayerControl> ().isInvincible ())
+				TakeDamage (Health + 10);
+			else
+				TakeDamage (1);
 		}
 	}
 }
