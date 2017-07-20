@@ -19,6 +19,9 @@ public class HealthGUIControl : MonoBehaviour
 		for (int i = 0; i < dmg; i++) {
 			_a.Play ("Health", 0, (1f / 6f) * (++stage));
 		}
+		if (dmg < 0) {
+			_a.Play ("Health", 0, (1f / 6f) * (--stage));
+		}
 	}
 	// Update is called once per frame
 	void Update ()

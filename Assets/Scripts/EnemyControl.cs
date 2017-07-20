@@ -63,7 +63,6 @@ public class EnemyControl : MonoBehaviour
 			MoveSpeed = randomAround (2.6f, 0.8f);
 			break;
 		}
-		Debug.Log (MoveSpeed);
 	}
 
 	float randomAround (float target, float range)
@@ -93,9 +92,6 @@ public class EnemyControl : MonoBehaviour
 			Instantiate (ExplosionEffect, transform.position, Quaternion.identity);
 			StartCoroutine (unlockDamage (0.2f));
 			Health -= dmg;
-			Color bc = GetComponent<SpriteRenderer> ().color;
-			bc.a -= 0.3f;
-			GetComponent<SpriteRenderer> ().color = bc;
 			if (Health <= 0) {
 				GameManager.GM.Tryscore (score);
 				Destroy (gameObject);

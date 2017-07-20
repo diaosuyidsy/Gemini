@@ -9,6 +9,7 @@ public class PlayerControl : MonoBehaviour
 	public GameObject White;
 	public GameObject Main;
 	public int Health = 6;
+	public int MaxHealth = 6;
 	public GameObject HealthO;
 	public bool StartLock = true;
 	public GameObject CirclePrefab;
@@ -80,6 +81,11 @@ public class PlayerControl : MonoBehaviour
 		foreach (RaycastHit2D hit in hits) {
 			if (hit.collider != null && hit.collider.gameObject.tag == "Enemy")
 				hit.collider.gameObject.SendMessage ("TakeDamage", 1);
+			else if (hit.collider != null && hit.collider.gameObject.tag == "HealOrb") {
+				ApplyDamage (-1);
+				Destroy (hit.collider.gameObject);
+			}
+				
 		}
 	}
 
@@ -89,7 +95,10 @@ public class PlayerControl : MonoBehaviour
 			Health -= dmg;
 
 			// Apply Damage to GUi
-			HealthO.GetComponent<HealthGUIControl> ().TakeDamage (dmg);
+			if (Health <= MaxHealth)
+				HealthO.GetComponent<HealthGUIControl> ().TakeDamage (dmg);
+			else
+				Health = MaxHealth;
 
 			if (Health <= 0f) {
 				Debug.Log ("Dead");

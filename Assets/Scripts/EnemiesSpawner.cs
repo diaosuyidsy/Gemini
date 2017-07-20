@@ -10,6 +10,7 @@ public class EnemiesSpawner : MonoBehaviour
 	public Transform EnemyParent;
 	public int epoch = 1;
 	public int difficulty = 1;
+	public GameObject HealOrbPrefab;
 
 	private bool FirstTimeLock = true;
 
@@ -23,7 +24,16 @@ public class EnemiesSpawner : MonoBehaviour
 		if (FirstTimeLock) {
 			FirstTimeLock = false;
 			StartCoroutine (Generate (0f));
+			StartCoroutine (SpawnHealOrb (0f));
 		}
+	}
+
+	IEnumerator SpawnHealOrb (float time)
+	{
+		yield return new WaitForSeconds (time);
+		int rd = Random.Range (0, SpawnPoints.Length / 2);
+		Instantiate (HealOrbPrefab, SpawnPoints [rd * 2 + 1].position, Quaternion.identity, EnemyParent);
+		StartCoroutine (SpawnHealOrb (30f));
 	}
 
 	IEnumerator Generate (float time)
