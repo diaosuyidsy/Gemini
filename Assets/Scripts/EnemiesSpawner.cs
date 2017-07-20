@@ -40,14 +40,14 @@ public class EnemiesSpawner : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 		epoch++;
-		if (epoch >= 15)
+		if (epoch == 15)
 			difficulty++;
-		if (epoch >= 30)
+		if (epoch == 30)
 			difficulty++;
 		for (int i = 0; i < difficulty; i++) {
 			int rd = Random.Range (0, SpawnPoints.Length);
 			Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
 		}
-		StartCoroutine (Generate (3f));
+		StartCoroutine (Generate (5f - difficulty));
 	}
 }
