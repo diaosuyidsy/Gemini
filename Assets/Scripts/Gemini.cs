@@ -28,12 +28,15 @@ public class Gemini : MonoBehaviour
 			rb.AddForce (forceNormal * Input.GetAxis ("Horizontal") * force);
 			#endif
 			if (Input.GetMouseButton (0)) {
-
-				if (Input.mousePosition.x >= Screen.width / 2f) {
-					rb.AddForce (forceNormal * force);
-				} else {
-					rb.AddForce (forceNormal * force * -1f);
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+				if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
+					if (Input.mousePosition.x >= Screen.width / 2f) {
+						rb.AddForce (forceNormal * force);
+					} else {
+						rb.AddForce (forceNormal * force * -1f);
+					}
 				}
+
 			}
 		}
 	}
