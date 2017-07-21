@@ -48,6 +48,7 @@ public class PlayerControl : MonoBehaviour
 							Main = White;
 							invincible = false;
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+							Black.GetComponent<Gemini> ().ApplyBurstForce (2000f);
 							turn = (turn + 1) % 4;
 							break;
 						case 2:
@@ -60,6 +61,7 @@ public class PlayerControl : MonoBehaviour
 							Main = Black;
 							invincible = false;
 							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+							White.GetComponent<Gemini> ().ApplyBurstForce (2000f);
 							turn = (turn + 1) % 4;
 							break;
 						}
@@ -110,5 +112,10 @@ public class PlayerControl : MonoBehaviour
 	public bool isInvincible ()
 	{
 		return invincible;
+	}
+
+	public void setInvincible (bool yes)
+	{
+		invincible = yes;
 	}
 }
