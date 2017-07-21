@@ -20,7 +20,6 @@ public class DeathZone : MonoBehaviour
 
 	void OnCollisionStay2D (Collision2D other)
 	{
-		Debug.Log ("Hello");
 		if (other.gameObject.tag == "Player")
 			other.gameObject.SendMessageUpwards ("setInvincible", false);
 	}
