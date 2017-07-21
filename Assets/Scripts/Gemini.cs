@@ -26,7 +26,7 @@ public class Gemini : MonoBehaviour
 		if (rb.velocity.magnitude < maxV && GetComponentInParent<PlayerControl> ().Main != null) {
 			#if UNITY_EDITOR
 			rb.AddForce (forceNormal * Input.GetAxis ("Horizontal") * force);
-			#endif
+
 			if (Input.GetMouseButton (0)) {
 				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
 				if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
@@ -36,7 +36,19 @@ public class Gemini : MonoBehaviour
 						rb.AddForce (forceNormal * force * -1f);
 					}
 				}
-
+			}
+			#endif
+			foreach (Touch touch in Input.touches) {
+				if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
+					RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
+					if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
+						if (Input.mousePosition.x >= Screen.width / 2f) {
+							rb.AddForce (forceNormal * force);
+						} else {
+							rb.AddForce (forceNormal * force * -1f);
+						}
+					}
+				}
 			}
 		}
 	}

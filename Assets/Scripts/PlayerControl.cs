@@ -15,7 +15,6 @@ public class PlayerControl : MonoBehaviour
 	public GameObject CirclePrefab;
 
 	private int turn = 0;
-	private float touchTimer = 0f;
 	private bool invincible = false;
 	// 0 is Black freeze, 1 is free all, 2 is White freeze, 3 is free all;
 
@@ -29,6 +28,7 @@ public class PlayerControl : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		#if UNITY_EDITOR
 		if (!StartLock) {
 			if (Input.GetMouseButtonDown (0) && !EventSystem.current.IsPointerOverGameObject ()) {
 				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
@@ -36,37 +36,76 @@ public class PlayerControl : MonoBehaviour
 					// Some VFX
 					GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
 					a.transform.localPosition = new Vector3 (-0.29f, -0.14f);
-					if (touchTimer <= 0.2f) {
-						switch (turn) {
-						case 0:
-							Main = null;
-							invincible = true;
-							Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-							turn = (turn + 1) % 4;
-							break;
-						case 1:
-							Main = White;
-							invincible = false;
-							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-							Black.GetComponent<Gemini> ().ApplyBurstForce (5000f);
-							turn = (turn + 1) % 4;
-							break;
-						case 2:
-							Main = null;
-							invincible = true;
-							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
-							turn = (turn + 1) % 4;
-							break;
-						case 3:
-							Main = Black;
-							invincible = false;
-							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-							White.GetComponent<Gemini> ().ApplyBurstForce (5000f);
-							turn = (turn + 1) % 4;
-							break;
-						}
+					switch (turn) {
+					case 0:
+						Main = null;
+						invincible = true;
+						Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 1:
+						Main = White;
+						invincible = false;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						Black.GetComponent<Gemini> ().ApplyBurstForce (5000f);
+						turn = (turn + 1) % 4;
+						break;
+					case 2:
+						Main = null;
+						invincible = true;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 3:
+						Main = Black;
+						invincible = false;
+						Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						White.GetComponent<Gemini> ().ApplyBurstForce (5000f);
+						turn = (turn + 1) % 4;
+						break;
 					}
-					touchTimer = 0f;
+
+				}
+			}
+		}
+		#endif
+		if (!StartLock) {
+			foreach (Touch touch in Input.touches) {
+				if (IsPointerOverUIObject ())
+					return;
+				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
+				if (hit.collider != null && hit.collider.gameObject.tag == "Health") {
+					// Some VFX
+					GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
+					a.transform.localPosition = new Vector3 (-0.29f, -0.14f);
+					switch (turn) {
+					case 0:
+						Main = null;
+						invincible = true;
+						Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 1:
+						Main = White;
+						invincible = false;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						Black.GetComponent<Gemini> ().ApplyBurstForce (5000f);
+						turn = (turn + 1) % 4;
+						break;
+					case 2:
+						Main = null;
+						invincible = true;
+						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
+						turn = (turn + 1) % 4;
+						break;
+					case 3:
+						Main = Black;
+						invincible = false;
+						Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+						White.GetComponent<Gemini> ().ApplyBurstForce (5000f);
+						turn = (turn + 1) % 4;
+						break;
+					}
 				}
 			}
 		}
@@ -119,5 +158,14 @@ public class PlayerControl : MonoBehaviour
 	public void setInvincible (bool yes)
 	{
 		invincible = yes;
+	}
+
+	private bool IsPointerOverUIObject ()
+	{
+		PointerEventData eventDataCurrentPosition = new PointerEventData (EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult> ();
+		EventSystem.current.RaycastAll (eventDataCurrentPosition, results);
+		return results.Count > 0;
 	}
 }
