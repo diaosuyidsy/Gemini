@@ -48,7 +48,7 @@ public class PlayerControl : MonoBehaviour
 							Main = White;
 							invincible = false;
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-							Black.GetComponent<Gemini> ().ApplyBurstForce (2000f);
+							Black.GetComponent<Gemini> ().ApplyBurstForce (5000f);
 							turn = (turn + 1) % 4;
 							break;
 						case 2:
@@ -61,7 +61,7 @@ public class PlayerControl : MonoBehaviour
 							Main = Black;
 							invincible = false;
 							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-							White.GetComponent<Gemini> ().ApplyBurstForce (2000f);
+							White.GetComponent<Gemini> ().ApplyBurstForce (5000f);
 							turn = (turn + 1) % 4;
 							break;
 						}

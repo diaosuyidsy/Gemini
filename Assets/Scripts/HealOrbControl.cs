@@ -7,6 +7,9 @@ public class HealOrbControl : MonoBehaviour
 	public float MoveSpeed = 0.1f;
 	public float selfDestructTime = 10f;
 	public float RotateSpeed = 5f;
+	public GameObject ExplosionEffectPrefab;
+
+	private bool isQuitting = false;
 
 	void Start ()
 	{
@@ -24,5 +27,16 @@ public class HealOrbControl : MonoBehaviour
 	{
 		transform.position = Vector3.MoveTowards (transform.position, Vector3.zero, MoveSpeed * Time.deltaTime);
 		transform.RotateAround (Vector3.zero, Vector3.forward, RotateSpeed * Time.deltaTime);
+	}
+
+	void OnDestroy ()
+	{
+		if (!isQuitting)
+			Instantiate (ExplosionEffectPrefab, transform.position, Quaternion.identity);
+	}
+
+	void OnApplicationQuit ()
+	{
+		isQuitting = true;
 	}
 }

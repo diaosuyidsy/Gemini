@@ -9,6 +9,7 @@ public class EnemyControl : MonoBehaviour
 	public float MoveSpeed = 50f;
 	public int Health = 3;
 	public GameObject ExplosionEffect;
+	public GameObject[] ExplosionEffectPrefabs;
 	public GameObject[] OrbsEffect;
 
 	private Transform target;
@@ -48,8 +49,9 @@ public class EnemyControl : MonoBehaviour
 		}
 		// Set up Score
 		score = Health;
-
+		//Set Up VFX
 		OrbsEffect [Health - 1].SetActive (true);
+		ExplosionEffect = ExplosionEffectPrefabs [Health - 1];
 		sr.color = EnemyColor;
 		//Setup Speed
 		switch (EnemiesSpawner.ES.difficulty) {
