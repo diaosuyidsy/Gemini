@@ -43,6 +43,7 @@ public class Gemini : MonoBehaviour
 
 	public void ApplyBurstForce (float forceNum)
 	{
+//		rb.velocity = rb.velocity.normalized * maxV;
 		rb.AddForce (rb.velocity.normalized * forceNum, ForceMode2D.Impulse);
 	}
 }

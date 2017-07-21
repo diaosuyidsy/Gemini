@@ -19,6 +19,7 @@ public class HealOrbControl : MonoBehaviour
 	IEnumerator selfDestruct (float time)
 	{
 		yield return new WaitForSeconds (time);
+		Instantiate (ExplosionEffectPrefab, transform.position, Quaternion.identity);
 		Destroy (gameObject);
 	}
 	
@@ -29,14 +30,9 @@ public class HealOrbControl : MonoBehaviour
 		transform.RotateAround (Vector3.zero, Vector3.forward, RotateSpeed * Time.deltaTime);
 	}
 
-	void OnDestroy ()
+	public void Absorb ()
 	{
-		if (!isQuitting)
-			Instantiate (ExplosionEffectPrefab, transform.position, Quaternion.identity);
-	}
-
-	void OnApplicationQuit ()
-	{
-		isQuitting = true;
+		Instantiate (ExplosionEffectPrefab, transform.position, Quaternion.identity);
+		Destroy (gameObject);
 	}
 }

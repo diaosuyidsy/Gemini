@@ -84,8 +84,8 @@ public class PlayerControl : MonoBehaviour
 			if (hit.collider != null && hit.collider.gameObject.tag == "Enemy")
 				hit.collider.gameObject.SendMessage ("TakeDamage", 1);
 			else if (hit.collider != null && hit.collider.gameObject.tag == "HealOrb") {
-				ApplyDamage (-1);
-				Destroy (hit.collider.gameObject);
+				ApplyDamage (-3);
+				hit.collider.gameObject.SendMessage ("Absorb");
 			}
 				
 		}
@@ -99,8 +99,10 @@ public class PlayerControl : MonoBehaviour
 			// Apply Damage to GUi
 			if (Health <= MaxHealth)
 				HealthO.GetComponent<HealthGUIControl> ().TakeDamage (dmg);
-			else
+			else {
 				Health = MaxHealth;
+				HealthO.GetComponent<HealthGUIControl> ().ResetGUI ();
+			}
 
 			if (Health <= 0f) {
 				Debug.Log ("Dead");
