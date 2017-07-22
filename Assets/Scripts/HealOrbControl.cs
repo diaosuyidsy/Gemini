@@ -9,7 +9,6 @@ public class HealOrbControl : MonoBehaviour
 	public float RotateSpeed = 5f;
 	public GameObject ExplosionEffectPrefab;
 
-	private bool isQuitting = false;
 
 	void Start ()
 	{

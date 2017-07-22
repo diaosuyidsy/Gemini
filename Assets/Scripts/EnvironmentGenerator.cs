@@ -26,7 +26,7 @@ public class EnvironmentGenerator : MonoBehaviour
 		Instantiate (StarPrefab, RandomPosition (), Quaternion.identity, StarHolder.transform);
 	}
 
-	Vector3 RandomPosition ()
+	public Vector3 RandomPosition ()
 	{
 		Vector3 up = EnemiesSpawner.ES.SpawnPoints [1].position;
 		Vector3 left = EnemiesSpawner.ES.SpawnPoints [3].position;

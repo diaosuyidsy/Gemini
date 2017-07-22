@@ -23,9 +23,17 @@ public class EnemiesSpawner : MonoBehaviour
 	{
 		if (FirstTimeLock) {
 			FirstTimeLock = false;
-			StartCoroutine (Generate (0f));
+			SpecialGenerate ();
 			StartCoroutine (SpawnHealOrb (0f));
 		}
+	}
+
+	void SpecialGenerate ()
+	{
+		epoch++;
+		int rd = Random.Range (0, SpawnPoints.Length);
+		Instantiate (EnemyPrefab, SpawnPoints [rd].position * 0.8f, Quaternion.identity, EnemyParent);
+		StartCoroutine (Generate (2f));
 	}
 
 	IEnumerator SpawnHealOrb (float time)
@@ -40,11 +48,11 @@ public class EnemiesSpawner : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 		epoch++;
-		if (epoch == 15)
+		if (epoch == 20)
 			difficulty++;
-		if (epoch == 30)
+		if (epoch == 35)
 			difficulty++;
-		for (int i = 0; i < difficulty; i++) {
+		for (int i = 0; i < (difficulty == 3 ? 2 : 1); i++) {
 			int rd = Random.Range (0, SpawnPoints.Length);
 			Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
 		}

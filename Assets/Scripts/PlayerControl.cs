@@ -146,7 +146,6 @@ public class PlayerControl : MonoBehaviour
 			}
 
 			if (Health <= 0f) {
-				Debug.Log ("Dead");
 				GameManager.GM.Restart ();
 			}
 		}

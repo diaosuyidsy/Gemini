@@ -15,15 +15,15 @@ public class EnemyControl : MonoBehaviour
 	private Transform target;
 	private Vector3 playerPos;
 	private bool damageLock = false;
-	private SpriteRenderer sr;
 	private int score;
+	private float epochNum;
 
 	void Start ()
 	{
 		if (Player == null) {
 			Player = GameObject.Find ("Player");
 		}
-		sr = GetComponent<SpriteRenderer> ();
+		epochNum = (float)EnemiesSpawner.ES.epoch;
 		init ();
 	}
 
@@ -37,12 +37,11 @@ public class EnemyControl : MonoBehaviour
 			target = Player.GetComponent<PlayerControl> ().White.transform;
 		}
 
-		// Set up Health and Color
+		// Set up Health
 		float rand = Random.Range (1f, 100f);
-		Color EnemyColor = new Color ();
-		if (rand <= 80f) {
+		if (rand <= 100f - Mathf.Min (epochNum * 2, 20f)) {
 			Health = 1;
-		} else if (rand <= 95f && rand > 80f) {
+		} else if (rand <= 100 - 0.25f * Mathf.Min (epochNum * 2, 20f) && rand > 100f - Mathf.Min (epochNum * 2, 20f)) {
 			Health = 2;
 		} else {
 			Health = 3;
@@ -52,17 +51,16 @@ public class EnemyControl : MonoBehaviour
 		//Set Up VFX
 		OrbsEffect [Health - 1].SetActive (true);
 		ExplosionEffect = ExplosionEffectPrefabs [Health - 1];
-		sr.color = EnemyColor;
 		//Setup Speed
 		switch (EnemiesSpawner.ES.difficulty) {
 		case 1:
-			MoveSpeed = randomAround (2.2f, 0.4f);
+			MoveSpeed = randomAround (2.4f, 0.4f);
 			break;
 		case 2:
-			MoveSpeed = randomAround (2.6f, 0.6f);
+			MoveSpeed = randomAround (2.8f, 0.4f);
 			break;
 		case 3: 
-			MoveSpeed = randomAround (3f, 0.8f);
+			MoveSpeed = randomAround (3f, 0.4f);
 			break;
 		}
 	}

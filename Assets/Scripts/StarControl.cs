@@ -5,33 +5,44 @@ using UnityEngine;
 public class StarControl : MonoBehaviour
 {
 	public float growSpeed = 1f;
+	public float dimSpeed = 0.5f;
 
-	private float centralRange;
+	private float intentistyRange;
 	private Light l;
-	private bool growing;
+	private bool dimming = false;
 	// Use this for initialization
 	void Start ()
 	{
 		l = GetComponent<Light> ();
-		growing = true;
-		centralRange = Random.Range (2.3f, 3f);
+		intentistyRange = Random.Range (1.7f, 2.2f);
+		l.range = Random.Range (1.25f, 3f);
 		StartCoroutine (selfDestruct ());
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		l.range += ((growing ? 1f : -1f) * Time.unscaledDeltaTime * growSpeed);
-		if (l.range >= centralRange + 1f)
-			growing = false;
-		if (l.range <= centralRange - 1f)
-			growing = true;
+		// first light up
+		if (!dimming && l.intensity <= intentistyRange)
+			l.intensity += (Time.unscaledDeltaTime * growSpeed);
+		
+		if (dimming) {
+			l.intensity -= (Time.unscaledDeltaTime * dimSpeed);
+		}
+
+		if (l.intensity <= 0f)
+			DimWayOut ();
 	}
 
 	IEnumerator selfDestruct ()
 	{
-		yield return new WaitForSeconds (Random.Range (50f, 80f));
-		EnvironmentGenerator.EG.GenerateNewStar ();
-		Destroy (gameObject);
+		yield return new WaitForSeconds (Random.Range (5f, 20f));
+		dimming = true;
+	}
+
+	void DimWayOut ()
+	{
+		transform.position = EnvironmentGenerator.EG.RandomPosition ();
+		dimming = false;
 	}
 }
