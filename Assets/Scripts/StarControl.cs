@@ -22,15 +22,15 @@ public class StarControl : MonoBehaviour
 	void Update ()
 	{
 		l.range += ((growing ? 1f : -1f) * Time.unscaledDeltaTime * growSpeed);
-		if (l.range >= centralRange + 0.775f)
+		if (l.range >= centralRange + 1f)
 			growing = false;
-		if (l.range <= centralRange - 0.775f)
+		if (l.range <= centralRange - 1f)
 			growing = true;
 	}
 
 	IEnumerator selfDestruct ()
 	{
-		yield return new WaitForSeconds (Random.Range (30f, 80f));
+		yield return new WaitForSeconds (Random.Range (50f, 80f));
 		EnvironmentGenerator.EG.GenerateNewStar ();
 		Destroy (gameObject);
 	}

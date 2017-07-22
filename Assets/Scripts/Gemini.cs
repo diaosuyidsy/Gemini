@@ -42,7 +42,7 @@ public class Gemini : MonoBehaviour
 				if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
 					RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
 					if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
-						if (Input.mousePosition.x >= Screen.width / 2f) {
+						if (touch.position.x >= Screen.width / 2f) {
 							rb.AddForce (forceNormal * force);
 						} else {
 							rb.AddForce (forceNormal * force * -1f);
