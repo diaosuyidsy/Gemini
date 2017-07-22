@@ -30,9 +30,8 @@ public class EnemiesSpawner : MonoBehaviour
 
 	void SpecialGenerate ()
 	{
-		epoch++;
 		int rd = Random.Range (0, SpawnPoints.Length);
-		Instantiate (EnemyPrefab, SpawnPoints [rd].position * 0.8f, Quaternion.identity, EnemyParent);
+		Instantiate (EnemyPrefab, SpawnPoints [rd].position * 0.7f, Quaternion.identity, EnemyParent);
 		StartCoroutine (Generate (2f));
 	}
 
@@ -48,9 +47,9 @@ public class EnemiesSpawner : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 		epoch++;
-		if (epoch == 20)
+		if (epoch == 15)
 			difficulty++;
-		if (epoch == 35)
+		if (epoch == 30)
 			difficulty++;
 		for (int i = 0; i < (difficulty == 3 ? 2 : 1); i++) {
 			int rd = Random.Range (0, SpawnPoints.Length);
