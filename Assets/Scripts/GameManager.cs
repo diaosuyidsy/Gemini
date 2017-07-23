@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 			Debug.Log ("Change Best Score");
 			PlayerPrefs.SetInt ("BestScore", score);
 		}
+		PlayerPrefs.SetInt ("LastScore", score);
 	}
 
 	public void StartGame ()
