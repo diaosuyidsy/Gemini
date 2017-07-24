@@ -21,9 +21,15 @@ public class EnemiesSpawner : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log (PlayerPrefs.GetInt ("LastScore"));
-		if (PlayerPrefs.GetInt ("LastScore", 0) >= 30) {
+		int lastscore = PlayerPrefs.GetInt ("LastScore", 0);
+		if (lastscore < 30) {
+			epoch = lastscore / 2;
+		} else if (epoch >= 30 && epoch < 50) {
 			epoch = 14;
+		} else if (epoch >= 50 && epoch < 70) {
+			epoch = 15 + (epoch - 50) / 2;
+		} else {
+			epoch = 25;
 		}
 	}
 
@@ -31,16 +37,23 @@ public class EnemiesSpawner : MonoBehaviour
 	{
 		if (FirstTimeLock) {
 			FirstTimeLock = false;
-			SpecialGenerate ();
+			SpecialGenerate (0.7f);
 			StartCoroutine (SpawnHealOrb (0f));
 		}
 	}
 
-	void SpecialGenerate ()
+	void SpecialGenerate (float ratio)
 	{
 		int rd = Random.Range (0, SpawnPoints.Length);
-		Instantiate (EnemyPrefab, SpawnPoints [rd].position * 0.7f, Quaternion.identity, EnemyParent);
+		Instantiate (EnemyPrefab, SpawnPoints [rd].position * ratio, Quaternion.identity, EnemyParent);
 		StartCoroutine (Generate (2f));
+	}
+
+	IEnumerator oneTimeGenerate (float time)
+	{
+		yield return new WaitForSeconds (time);
+		int rd = Random.Range (0, SpawnPoints.Length);
+		Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
 	}
 
 	IEnumerator SpawnHealOrb (float time)
@@ -54,18 +67,18 @@ public class EnemiesSpawner : MonoBehaviour
 	IEnumerator Generate (float time)
 	{
 		yield return new WaitForSeconds (time);
-		Debug.Log (EnemyParent.childCount);
 		if (EnemyParent.childCount < 9) {
 			epoch++;
 			if (epoch == 15)
 				difficulty++;
 			if (epoch == 30)
 				difficulty++;
-			for (int i = 0; i < (difficulty == 3 ? 2 : 1); i++) {
-				int rd = Random.Range (0, SpawnPoints.Length);
-				Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
+			int rd = Random.Range (0, SpawnPoints.Length);
+			Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
+			if (difficulty == 3) {
+				StartCoroutine (oneTimeGenerate (1f));
 			}
 		}
-		StartCoroutine (Generate (5f - difficulty));
+		StartCoroutine (Generate (5f - Mathf.Min (1f * epoch / 7.5f, 3f)));
 	}
 }

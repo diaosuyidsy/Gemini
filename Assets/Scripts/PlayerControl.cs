@@ -134,7 +134,7 @@ public class PlayerControl : MonoBehaviour
 
 	public void ApplyDamage (int dmg)
 	{
-		if (!invincible || dmg > 50) {
+		if (!invincible || dmg > 50 || dmg < 0) {
 			Health -= dmg;
 
 			// Apply Damage to GUi
