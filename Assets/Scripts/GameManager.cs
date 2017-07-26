@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Text;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -174,7 +176,12 @@ public class GameManager : MonoBehaviour
 
 	void setupLevelText (int currentLevel)
 	{
-		string fileData = System.IO.File.ReadAllText (LevelInfoPath);
+		StreamReader theReader = new StreamReader (LevelInfoPath, Encoding.Default);
+		string fileData = "";
+		using (theReader) {
+			fileData = theReader.ReadToEnd ();
+			theReader.Close ();
+		}
 		string[] lines = fileData.Split ("\n" [0]);
 		string[] words = { "" };
 		string[] currentPerks = { "" };

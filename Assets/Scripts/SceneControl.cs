@@ -13,13 +13,6 @@ public class SceneControl : MonoBehaviour
 	public GameObject levelParticle;
 
 	private bool scaleup = false;
-	private float clickTimer;
-	private bool timer = false;
-
-	void Start ()
-	{
-		clickTimer = 0f;
-	}
 
 	public void GameStart ()
 	{
@@ -30,27 +23,27 @@ public class SceneControl : MonoBehaviour
 	{
 		m_Play.MoveIn (GSui.eGUIMove.SelfAndChildren);
 	}
-
-	void Update ()
-	{
-		if (LevelExplainer.transform.localScale.x <= 0f) {
-			LevelExplainer.SetActive (false);
-		} else {
-			LevelExplainer.SetActive (true);
-		}
-		if (!scaleup && LevelExplainer.transform.localScale.x > 0f) {
-			LevelExplainer.transform.localScale -= new Vector3 (Time.deltaTime * scaleSpeed, Time.deltaTime * scaleSpeed);
-		} else if (!scaleup && LevelExplainer.transform.localScale.x <= 0f) {
-			
-		} else if (scaleup && LevelExplainer.transform.localScale.x <= 0.9f) {
-			LevelExplainer.transform.localScale += new Vector3 (Time.deltaTime * scaleSpeed, Time.deltaTime * scaleSpeed);
-		}
-	}
+	//
+	//	void Update ()
+	//	{
+	//		if (LevelExplainer.transform.localScale.x <= 0f) {
+	//			LevelExplainer.SetActive (false);
+	//		} else {
+	//			LevelExplainer.SetActive (true);
+	//		}
+	//		if (!scaleup && LevelExplainer.transform.localScale.x > 0f) {
+	//			LevelExplainer.transform.localScale -= new Vector3 (Time.deltaTime * scaleSpeed, Time.deltaTime * scaleSpeed);
+	//		} else if (scaleup && LevelExplainer.transform.localScale.x <= 0.9f) {
+	//			LevelExplainer.transform.localScale += new Vector3 (Time.deltaTime * scaleSpeed, Time.deltaTime * scaleSpeed);
+	//		} else if (LevelExplainer.transform.localScale.x > 1f) {
+	//			LevelExplainer.transform.localScale = new Vector3 (1f, 1f);
+	//		}
+	//	}
 
 	public void Down ()
 	{
 		if (GameManager.GM.StartLock) {
-			scaleup = true;
+			LevelExplainer.SetActive (true);
 			levelParticle.SetActive (false);
 			PlayerPrefs.SetInt ("NeedTouch", 0);
 		}
@@ -59,7 +52,7 @@ public class SceneControl : MonoBehaviour
 	public void Up ()
 	{
 		if (GameManager.GM.StartLock) {
-			scaleup = false;
+			LevelExplainer.SetActive (false);
 		}
 	}
 
