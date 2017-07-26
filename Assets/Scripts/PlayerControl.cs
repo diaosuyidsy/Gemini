@@ -36,10 +36,12 @@ public class PlayerControl : MonoBehaviour
 					// Some VFX
 					GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
 					a.transform.localPosition = new Vector3 (-0.29f, -0.14f);
+					bool invincibleAble = PlayerPrefs.GetInt ("InvicibleAble", 0) == 1;
 					switch (turn) {
 					case 0:
 						Main = null;
-						invincible = true;
+						if (invincibleAble)
+							invincible = true;
 						Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 						turn = (turn + 1) % 4;
 						break;
@@ -52,7 +54,8 @@ public class PlayerControl : MonoBehaviour
 						break;
 					case 2:
 						Main = null;
-						invincible = true;
+						if (invincibleAble)
+							invincible = true;
 						White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 						turn = (turn + 1) % 4;
 						break;

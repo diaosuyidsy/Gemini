@@ -11,12 +11,16 @@ public class EnemyControl : MonoBehaviour
 	public GameObject ExplosionEffect;
 	public GameObject[] ExplosionEffectPrefabs;
 	public GameObject[] OrbsEffect;
+	public GameObject ForstRingEffect;
+	public GameObject DestructionRightEffect;
 
 	private Transform target;
 	private Vector3 playerPos;
 	private bool damageLock = false;
 	private int score;
 	private float epochNum;
+	private int maxHealth;
+	private bool freezee = false;
 
 	void Start ()
 	{
@@ -46,6 +50,7 @@ public class EnemyControl : MonoBehaviour
 		} else {
 			Health = 3;
 		}
+		maxHealth = Health;
 		// Set up Score
 		score = Health;
 		//Set Up VFX
@@ -81,8 +86,10 @@ public class EnemyControl : MonoBehaviour
 		transform.rotation = Quaternion.Euler (0f, 0f, rot_z - 90);
 
 		if (Vector3.Distance (transform.position, playerPos) >= MinDist) {
-			transform.position += transform.up * MoveSpeed * Time.deltaTime;
+			if (!freezee)
+				transform.position += transform.up * MoveSpeed * Time.deltaTime;
 		}
+			
 	}
 
 	public void TakeDamage (int dmg)
@@ -94,8 +101,50 @@ public class EnemyControl : MonoBehaviour
 			Health -= dmg;
 			if (Health <= 0) {
 				GameManager.GM.Tryscore (score);
+				ProduceRing ();
 				Destroy (gameObject);
 			}
+		}
+	}
+
+	void OnDrawGizmos ()
+	{
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere (transform.position, 8f);
+	}
+
+	public void freeze (float time)
+	{
+		StartCoroutine (froze (time));
+	}
+
+	IEnumerator froze (float time)
+	{
+		freezee = true;
+		yield return new WaitForSeconds (time);
+		freezee = false;
+	}
+
+	void ProduceRing ()
+	{
+		int frost = PlayerPrefs.GetInt ("FrostRing", 0);
+		int dest = PlayerPrefs.GetInt ("DestructionRing", 0);
+		if (maxHealth == 2 && frost >= 1) {
+			Collider2D[] colliders = Physics2D.OverlapCircleAll (transform.position, 8f * frost);
+			foreach (Collider2D collider in colliders) {
+				if (collider.gameObject.tag == "Enemy") {
+					collider.gameObject.SendMessage ("freeze", 3f);
+				}
+			}
+			Instantiate (ForstRingEffect, transform.position, Quaternion.identity);
+		} else if (maxHealth == 3 && dest >= 1) {
+			Collider2D[] colliders = Physics2D.OverlapCircleAll (transform.position, 4f * dest);
+			foreach (Collider2D collider in colliders) {
+				if (collider.gameObject.tag == "Enemy") {
+					collider.gameObject.SendMessage ("TakeDamage", 1);
+				}
+			}
+			Instantiate (DestructionRightEffect, transform.position, Quaternion.identity);
 		}
 	}
 

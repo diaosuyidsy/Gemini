@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
 	void AddXP (int num)
 	{
-		currentXP += (num * 50);
+		currentXP += (num * 10);
 		if (currentXP >= XPpool) {
 			// Level UP	
 			LevelUP ();
@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
 			PlayerPrefs.SetInt ("HealAmount", 2);
 			break;
 		case 14:
+			PlayerPrefs.SetInt ("FrostRing", 1);
 			break;
 		case 15:
 			White.GetComponent<Gemini> ().setDistanceLonger ();
@@ -158,6 +159,13 @@ public class GameManager : MonoBehaviour
 			PlayerPrefs.SetInt ("HealAmount", 3);
 			break;
 		case 20:
+			PlayerPrefs.SetInt ("DestructionRing", 1);
+			break;
+		case 22:
+			PlayerPrefs.SetInt ("FrostRing", 2);
+			break;
+		case 24:
+			PlayerPrefs.SetInt ("DestructionRing", 2);
 			break;
 		default:
 			break;

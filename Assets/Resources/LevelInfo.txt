@@ -8,3 +8,5 @@
 15,Elongated Duots IV,Increase distance between duots,Elongated Duots III;Heal Orb II;Invincible Duots;Frost Rings
 16,Heal Orb III,Generate Heal Orb randomly that heals 1 Health,Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings
 20,Destruction,Destruction balls deal damage to nearby balls upon destroyed,Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings
+22,Frost Rings II,Ice Balls freeze nearby balls upon destroyed(Double Range),Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings;Destruction
+24,Destruction II,Destruction balls deal damage to nearby balls upon destroyed(Double Range),Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction
