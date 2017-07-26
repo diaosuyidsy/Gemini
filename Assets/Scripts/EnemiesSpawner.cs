@@ -38,7 +38,8 @@ public class EnemiesSpawner : MonoBehaviour
 		if (FirstTimeLock) {
 			FirstTimeLock = false;
 			SpecialGenerate (0.7f);
-			StartCoroutine (SpawnHealOrb (0f));
+			if (PlayerPrefs.GetInt ("SpawnHeal", 0) == 1)
+				StartCoroutine (SpawnHealOrb (0f));
 		}
 	}
 
@@ -61,7 +62,7 @@ public class EnemiesSpawner : MonoBehaviour
 		yield return new WaitForSeconds (time);
 		int rd = Random.Range (0, SpawnPoints.Length / 2);
 		Instantiate (HealOrbPrefab, SpawnPoints [rd * 2 + 1].position, Quaternion.identity);
-		StartCoroutine (SpawnHealOrb (40f / difficulty));
+		StartCoroutine (SpawnHealOrb (40f - (difficulty - 1) * 3f));
 	}
 
 	IEnumerator Generate (float time)

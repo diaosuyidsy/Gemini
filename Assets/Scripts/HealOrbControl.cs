@@ -38,7 +38,7 @@ public class HealOrbControl : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == "Player") {
-			other.gameObject.SendMessageUpwards ("ApplyDamage", -3);
+			other.gameObject.SendMessageUpwards ("ApplyDamage", -1 * PlayerPrefs.GetInt ("HealAmount", 1));
 			Absorb ();
 		}
 	}

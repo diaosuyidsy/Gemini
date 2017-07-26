@@ -9,14 +9,27 @@ public class Gemini : MonoBehaviour
 	public float maxV = 500f;
 
 	private Rigidbody2D rb;
+	private float distance = 0.1f;
 	// Use this for initialization
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D> ();
+		distance = PlayerPrefs.GetFloat ("DuotDistance", 0.1f);
+		if (gameObject.name == "White") {
+			transform.localPosition = new Vector3 (distance, 0f);
+		}
+	}
+
+	public void setDistanceLonger ()
+	{
+		float d = PlayerPrefs.GetFloat ("DuotDistance", 0.1f);
+		PlayerPrefs.SetFloat ("DuotDistance", d + 0.175f);
 	}
 
 	void FixedUpdate ()
 	{
+		if (GameManager.GM.StartLock)
+			return;
 		Vector3 centiVec = transform.position - otherPart.transform.position;
 		Vector3 forceNormal = Vector3.Cross (centiVec, Vector3.forward).normalized;
 		if (rb.velocity.magnitude > maxV) {

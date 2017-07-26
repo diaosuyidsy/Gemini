@@ -1,0 +1,10 @@
+1,Elongated Duots I,Increase distance between duots,
+3,Elongated Duots II,Increase distance between duots,Elongated Duots I
+4,Heal Orb I,Generate Heal Orb randomly that heals 1 Health(Green One),Elongated Duots II
+7,Invincible Duots,Duots become invincible when released,Elongated Duots II;Heal Orb I
+9,Elongated Duots III,Increase distance between duots,Elongated Duots II;Heal Orb I;Invincible Duots
+11,Heal Orb II,Generate Heal Orb randomly that heals 2 Health,Elongated Duots III;Heal Orb I;Invincible Duots
+14,Frost Rings,Ice Balls freeze nearby balls upon destroyed,Elongated Duots III;Heal Orb II;Invincible Duots
+15,Elongated Duots IV,Increase distance between duots,Elongated Duots III;Heal Orb II;Invincible Duots;Frost Rings
+16,Heal Orb III,Generate Heal Orb randomly that heals 1 Health,Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings
+20,Destruction,Destruction balls deal damage to nearby balls upon destroyed,Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings
