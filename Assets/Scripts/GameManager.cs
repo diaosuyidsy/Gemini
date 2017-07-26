@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 	public Text CurrentPerks;
 	public GameObject White;
 	public GameObject levelParticle;
+	public TextAsset levelInfo;
 
 	private int score = 0;
 	private int bestscore;
@@ -176,12 +177,8 @@ public class GameManager : MonoBehaviour
 
 	void setupLevelText (int currentLevel)
 	{
-		StreamReader theReader = new StreamReader (LevelInfoPath, Encoding.Default);
-		string fileData = "";
-		using (theReader) {
-			fileData = theReader.ReadToEnd ();
-			theReader.Close ();
-		}
+		
+		string fileData = levelInfo.text;
 		string[] lines = fileData.Split ("\n" [0]);
 		string[] words = { "" };
 		string[] currentPerks = { "" };
