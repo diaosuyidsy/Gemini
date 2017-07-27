@@ -78,7 +78,7 @@ public class PlayerControl : MonoBehaviour
 					return;
 				if (touch.phase == TouchPhase.Ended) {
 					RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
-					if (hit.collider != null && hit.collider.gameObject.tag == "Health") {
+					if (hit.collider != null && hit.collider.gameObject.tag == "Health" && PlayerPrefs.GetInt ("DuotsEnable", 0) == 1) {
 						// Some VFX
 						GameObject a = Instantiate (CirclePrefab, HealthO.transform.position, Quaternion.identity, HealthO.transform);
 						a.transform.localPosition = new Vector3 (-0.29f, -0.14f);
