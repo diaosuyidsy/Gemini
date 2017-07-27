@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TutorialDesigner;
 
 public class Gemini : MonoBehaviour
 {
@@ -44,8 +45,10 @@ public class Gemini : MonoBehaviour
 				RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
 				if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
 					if (Input.mousePosition.x >= Screen.width / 2f) {
+						EventManager.TriggerEvent ("TouchRight");
 						rb.AddForce (forceNormal * force);
 					} else {
+						EventManager.TriggerEvent ("TouchLeft");
 						rb.AddForce (forceNormal * force * -1f);
 					}
 				}
@@ -56,13 +59,22 @@ public class Gemini : MonoBehaviour
 					RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
 					if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
 						if (touch.position.x >= Screen.width / 2f) {
+							EventManager.TriggerEvent ("TouchRight");
 							rb.AddForce (forceNormal * force);
 						} else {
+							EventManager.TriggerEvent ("TouchLeft");
 							rb.AddForce (forceNormal * force * -1f);
 						}
 					}
 				}
 			}
+		}
+	}
+
+	void Update ()
+	{
+		if (Input.GetMouseButtonDown (0)) {
+			EventManager.TriggerEvent ("HitAnyWhere");
 		}
 	}
 

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Text;
 using System.IO;
+using TutorialDesigner;
 
 public class GameManager : MonoBehaviour
 {
@@ -79,7 +80,9 @@ public class GameManager : MonoBehaviour
 	public void StartGame ()
 	{
 		Time.timeScale = 1f;
-		GetComponent<EnemiesSpawner> ().StartGame ();
+		EventManager.TriggerEvent ("GameStarted");
+		if (GameObject.Find ("TutorialSystem").GetComponent<SavePoint> ().IsTutorialDone ())
+			GetComponent<EnemiesSpawner> ().StartGame ();
 		StartLock = false;
 		// Unlock Player Control
 		StartCoroutine (Unlock ());

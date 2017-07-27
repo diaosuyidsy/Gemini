@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TutorialDesigner;
 
 public class EnemiesSpawner : MonoBehaviour
 {
@@ -46,7 +47,10 @@ public class EnemiesSpawner : MonoBehaviour
 	void SpecialGenerate (float ratio)
 	{
 		int rd = Random.Range (0, SpawnPoints.Length);
-		Instantiate (EnemyPrefab, SpawnPoints [rd].position * ratio, Quaternion.identity, EnemyParent);
+		if (GameObject.Find ("TutorialSystem").GetComponent<SavePoint> ().IsTutorialDone ())
+			Instantiate (EnemyPrefab, SpawnPoints [rd].position * ratio, Quaternion.identity, EnemyParent);
+		else
+			Instantiate (EnemyPrefab, SpawnPoints [4].position * 0.5f, Quaternion.identity, EnemyParent);
 		StartCoroutine (Generate (2f));
 	}
 

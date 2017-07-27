@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TutorialDesigner;
 
 public class EnemyControl : MonoBehaviour
 {
@@ -89,7 +90,6 @@ public class EnemyControl : MonoBehaviour
 			if (!freezee)
 				transform.position += transform.up * MoveSpeed * Time.deltaTime;
 		}
-			
 	}
 
 	public void TakeDamage (int dmg)
@@ -100,6 +100,7 @@ public class EnemyControl : MonoBehaviour
 			StartCoroutine (unlockDamage (0.2f));
 			Health -= dmg;
 			if (Health <= 0) {
+				EventManager.TriggerEvent ("HitEnemy");
 				GameManager.GM.Tryscore (score);
 				ProduceRing ();
 				Destroy (gameObject);
@@ -107,10 +108,12 @@ public class EnemyControl : MonoBehaviour
 		}
 	}
 
-	void OnDrawGizmos ()
+	void OnWillRenderObject ()
 	{
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere (transform.position, 8f);
+		if (Camera.current == Camera.main) {
+			EventManager.TriggerEvent ("EnemyEnter");
+			SceneControl.SC.TDEnemyHere = gameObject;
+		}
 	}
 
 	public void freeze (float time)
