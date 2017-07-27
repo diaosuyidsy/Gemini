@@ -199,6 +199,7 @@ public class GameManager : MonoBehaviour
 		UnlockLevel.text = words [0];
 		NextPerk.text = words [1];
 		PerkElaboration.text = words [2];
+		CurrentPerks.text = "";
 		foreach (string perk in currentPerks) {
 			CurrentPerks.text += (perk + "\n");
 		}

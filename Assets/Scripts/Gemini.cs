@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TutorialDesigner;
+using UnityEngine.EventSystems;
 
 public class Gemini : MonoBehaviour
 {
@@ -55,6 +56,8 @@ public class Gemini : MonoBehaviour
 			}
 			#endif
 			foreach (Touch touch in Input.touches) {
+				if (IsPointerOverUIObject ())
+					return;
 				if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
 					RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (touch.position), Vector2.zero);
 					if (hit.collider == null || (hit.collider != null && hit.collider.gameObject.tag != "Health")) {
@@ -82,5 +85,14 @@ public class Gemini : MonoBehaviour
 	{
 //		rb.velocity = rb.velocity.normalized * maxV;
 		rb.AddForce (rb.velocity.normalized * forceNum, ForceMode2D.Impulse);
+	}
+
+	private bool IsPointerOverUIObject ()
+	{
+		PointerEventData eventDataCurrentPosition = new PointerEventData (EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult> ();
+		EventSystem.current.RaycastAll (eventDataCurrentPosition, results);
+		return results.Count > 0;
 	}
 }
