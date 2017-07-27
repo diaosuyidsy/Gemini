@@ -23,12 +23,13 @@ public class GameManager : MonoBehaviour
 	public GameObject White;
 	public GameObject levelParticle;
 	public TextAsset levelInfo;
+	public TextAsset ExperienceTxt;
 
 	private int score = 0;
 	private int bestscore;
 	private float XPpool;
 	private float currentXP;
-	private static string LevelInfoPath = "Assets/Resources/LevelInfo.txt";
+	private string[] XPpoolstr;
 
 	void Awake ()
 	{
@@ -46,7 +47,8 @@ public class GameManager : MonoBehaviour
 		currentXP = PlayerPrefs.GetFloat ("CurrentXP", 0);
 
 		//Set up Level Info
-		XPpool = (level + 1) * 100f;
+		XPpoolstr = ExperienceTxt.text.Split ("\n" [0]);
+		float.TryParse (XPpoolstr [level], out XPpool);
 		LevelText.text = level.ToString ();
 		FilledLevel.fillAmount = currentXP / XPpool;
 
@@ -126,7 +128,7 @@ public class GameManager : MonoBehaviour
 		level++;
 		LevelText.text = level.ToString ();
 		currentXP = 0;
-		XPpool += 100f;
+		float.TryParse (XPpoolstr [level], out XPpool);
 		FilledLevel.fillAmount = 0f;
 		// Write to disk about it
 		PlayerPrefs.SetInt ("Level", level);
@@ -134,6 +136,9 @@ public class GameManager : MonoBehaviour
 		setupLevelText (level);
 		switch (level) {
 		case 1:
+			PlayerPrefs.SetInt ("DuotsEnable", 1);
+			break;
+		case 2:
 			White.GetComponent<Gemini> ().setDistanceLonger ();
 			break;
 		case 3:
@@ -143,31 +148,31 @@ public class GameManager : MonoBehaviour
 			PlayerPrefs.SetInt ("SpawnHeal", 1);
 			PlayerPrefs.SetInt ("HealAmount", 1);
 			break;
-		case 7:
+		case 5:
 			PlayerPrefs.SetInt ("InvicibleAble", 1);
+			break;
+		case 6:
+			White.GetComponent<Gemini> ().setDistanceLonger ();
+			break;
+		case 7:
+			PlayerPrefs.SetInt ("HealAmount", 2);
+			break;
+		case 8:
+			PlayerPrefs.SetInt ("FrostRing", 1);
 			break;
 		case 9:
 			White.GetComponent<Gemini> ().setDistanceLonger ();
 			break;
-		case 11:
-			PlayerPrefs.SetInt ("HealAmount", 2);
-			break;
-		case 14:
-			PlayerPrefs.SetInt ("FrostRing", 1);
-			break;
-		case 15:
-			White.GetComponent<Gemini> ().setDistanceLonger ();
-			break;
-		case 16:
+		case 10:
 			PlayerPrefs.SetInt ("HealAmount", 3);
 			break;
-		case 20:
+		case 11:
 			PlayerPrefs.SetInt ("DestructionRing", 1);
 			break;
-		case 22:
+		case 12:
 			PlayerPrefs.SetInt ("FrostRing", 2);
 			break;
-		case 24:
+		case 13:
 			PlayerPrefs.SetInt ("DestructionRing", 2);
 			break;
 		default:
@@ -182,28 +187,10 @@ public class GameManager : MonoBehaviour
 		string[] lines = fileData.Split ("\n" [0]);
 		string[] words = { "" };
 		string[] currentPerks = { "" };
-		if (currentLevel < 1) {
-			words = lines [0].Split (',');
-		} else if (currentLevel >= 1 && currentLevel < 3) {
-			words = lines [1].Split (',');
-		} else if (currentLevel >= 3 && currentLevel < 4) {
-			words = lines [2].Split (',');
-		} else if (currentLevel >= 4 && currentLevel < 7) {
-			words = lines [3].Split (',');
-		} else if (currentLevel >= 7 && currentLevel < 9) {
-			words = lines [4].Split (',');
-		} else if (currentLevel >= 9 && currentLevel < 11) {
-			words = lines [5].Split (',');
-		} else if (currentLevel >= 11 && currentLevel < 14) {
-			words = lines [6].Split (',');
-		} else if (currentLevel >= 14 && currentLevel < 15) {
-			words = lines [7].Split (',');
-		} else if (currentLevel >= 15 && currentLevel < 16) {
-			words = lines [8].Split (',');
-		} else if (currentLevel >= 16 && currentLevel < 20) {
-			words = lines [9].Split (',');
+		if (currentLevel <= 13) {
+			words = lines [currentLevel].Split (',');
 		} else {
-			
+			words = lines [lines.Length - 1].Split (',');
 		}
 		currentPerks = words [words.Length - 1].Split (';');
 		UnlockLevel.text = words [0];
