@@ -5,10 +5,10 @@
 5,Invincible Duots,Duots become invincible when released,Duots;Elongated Duots II;Heal Orb I
 6,Elongated Duots III,Increase distance between duots,Duots;Elongated Duots II;Heal Orb I;Invincible Duots
 7,Heal Orb II,Generate Heal Orb randomly that heals 2 Health,Duots;Elongated Duots III;Heal Orb I;Invincible Duots
-8,Frost Rings,Ice Balls freeze nearby balls upon destroyed,Duots;Elongated Duots III;Heal Orb II;Invincible Duots
+8,Frost Rings,Frozen Orbs freeze nearby balls upon destroyed,Duots;Elongated Duots III;Heal Orb II;Invincible Duots
 9,Elongated Duots IV,Increase distance between duots,Duots;Elongated Duots III;Heal Orb II;Invincible Duots;Frost Rings
 10,Heal Orb III,Generate Heal Orb randomly that heals 1 Health,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings
-11,Destruction,Destruction balls deal damage to nearby balls upon destroyed,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings
-12,Frost Rings II,Ice Balls freeze nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings;Destruction
-13,Destruction II,Destruction balls deal damage to nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction
+11,Destruction,Destruction Orbs deal damage to nearby balls upon destroyed,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings
+12,Frost Rings II,Frozen Orbs freeze nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings;Destruction
+13,Destruction II,Destruction Orbs deal damage to nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction
 N/A,None,You Have Unlocked Every Power of Duots,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction II

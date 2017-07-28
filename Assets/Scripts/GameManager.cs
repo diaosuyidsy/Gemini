@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 	public GameObject levelParticle;
 	public TextAsset levelInfo;
 	public TextAsset ExperienceTxt;
+	public GameObject LevelUPText;
+	public GameObject HealthCircle;
 
 	private int score = 0;
 	private int bestscore;
@@ -53,6 +55,10 @@ public class GameManager : MonoBehaviour
 		LevelText.text = level.ToString ();
 		FilledLevel.fillAmount = currentXP / XPpool;
 
+		if (level < 1) {
+			Debug.Log ("Heelo");
+			HealthCircle.SetActive (false);
+		}
 		setupLevelText (level);
 		if (PlayerPrefs.GetInt ("NeedTouch", 0) == 1) {
 			levelParticle.SetActive (true);
@@ -126,6 +132,7 @@ public class GameManager : MonoBehaviour
 
 	void LevelUP ()
 	{
+		StartCoroutine (LevelUpText (2f));
 		levelParticle.SetActive (true);
 		PlayerPrefs.SetInt ("NeedTouch", 1);
 		level++;
@@ -139,6 +146,7 @@ public class GameManager : MonoBehaviour
 		setupLevelText (level);
 		switch (level) {
 		case 1:
+			HealthCircle.SetActive (true);
 			PlayerPrefs.SetInt ("DuotsEnable", 1);
 			break;
 		case 2:
@@ -203,6 +211,13 @@ public class GameManager : MonoBehaviour
 		foreach (string perk in currentPerks) {
 			CurrentPerks.text += (perk + "\n");
 		}
-
 	}
+
+	IEnumerator LevelUpText (float time)
+	{
+		LevelUPText.SetActive (true);
+		yield return new WaitForSeconds (time);
+		LevelUPText.SetActive (false);
+	}
+
 }

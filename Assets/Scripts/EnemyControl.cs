@@ -22,6 +22,7 @@ public class EnemyControl : MonoBehaviour
 	private float epochNum;
 	private int maxHealth;
 	private bool freezee = false;
+	public int DemandHealth = 0;
 
 	void Start ()
 	{
@@ -51,6 +52,8 @@ public class EnemyControl : MonoBehaviour
 		} else {
 			Health = 3;
 		}
+		if (DemandHealth != 0)
+			Health = DemandHealth;
 		maxHealth = Health;
 		// Set up Score
 		score = Health;
@@ -111,8 +114,12 @@ public class EnemyControl : MonoBehaviour
 	void OnWillRenderObject ()
 	{
 		if (Camera.current == Camera.main) {
-			EventManager.TriggerEvent ("EnemyEnter");
 			SceneControl.SC.TDEnemyHere = gameObject;
+			EventManager.TriggerEvent ("EnemyEnter");
+		}
+		if (maxHealth == 2) {
+			SceneControl.SC.TDEnemyHere = gameObject;
+			EventManager.TriggerEvent ("SpecialEnemyEnter");
 		}
 	}
 

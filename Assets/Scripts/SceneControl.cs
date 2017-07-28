@@ -23,6 +23,8 @@ public class SceneControl : MonoBehaviour
 	public GameObject TDDialogue6;
 	public Text TDDialogue6Text;
 	public GameObject TDDialogue7;
+	public GameObject TDDialogue8;
+	public Text TDDialogue8Text;
 
 	void Awake ()
 	{
@@ -121,6 +123,34 @@ public class SceneControl : MonoBehaviour
 	public void GoodToGo (bool open)
 	{
 		TDDialogue7.SetActive (open);
+	}
+
+	public void SpecialEnemyEnter ()
+	{
+		Time.timeScale = 0f;
+		if (TDEnemyHere != null) {
+			TDDialogue8.SetActive (true);
+			TDDialogue8.transform.position = Camera.main.WorldToScreenPoint (TDEnemyHere.transform.position);
+			if (Camera.main.WorldToScreenPoint (TDEnemyHere.transform.position).x > Screen.width / 2f) {
+				TDDialogue8Text.transform.localPosition = new Vector3 (-130, -26, 0);
+			}
+		}
+	}
+
+	public void DestroOrbIntro ()
+	{
+		TDDialogue8Text.text = "Another Type of Special Orb is Destruction Orb(Purple One)";
+	}
+
+	public void DestroOrbIntro2 ()
+	{
+		TDDialogue8Text.text = "That takes 3 hits to eliminate";
+	}
+
+	public void DoneIntroOrbs ()
+	{
+		TDDialogue8.SetActive (false);
+		Time.timeScale = 1f;
 	}
 
 

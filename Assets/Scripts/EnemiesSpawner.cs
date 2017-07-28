@@ -47,11 +47,22 @@ public class EnemiesSpawner : MonoBehaviour
 	void SpecialGenerate (float ratio)
 	{
 		int rd = Random.Range (0, SpawnPoints.Length);
-		if (GameObject.Find ("TutorialSystem").GetComponent<SavePoint> ().IsTutorialDone ())
+		if (GameObject.Find ("TutorialSystem").GetComponent<SavePoint> ().IsTutorialDone ()) {
 			Instantiate (EnemyPrefab, SpawnPoints [rd].position * ratio, Quaternion.identity, EnemyParent);
-		else
-			Instantiate (EnemyPrefab, SpawnPoints [4].position * 0.5f, Quaternion.identity, EnemyParent);
-		StartCoroutine (Generate (2f));
+			StartCoroutine (Generate (2f));
+		} else {
+			GameObject specialEnemy = (GameObject)Instantiate (EnemyPrefab, SpawnPoints [4].position * 0.5f, Quaternion.identity, EnemyParent);
+			specialEnemy.GetComponent<EnemyControl> ().DemandHealth = 1;
+			StartCoroutine (TutorialGenerate (2f));
+		}
+	}
+
+	IEnumerator TutorialGenerate (float time)
+	{
+		yield return new WaitForSeconds (time);
+		GameObject specialEnemy = (GameObject)Instantiate (EnemyPrefab, SpawnPoints [3].position * 0.9f, Quaternion.identity, EnemyParent);
+		specialEnemy.GetComponent<EnemyControl> ().DemandHealth = 2;
+		StartCoroutine (Generate (4f));
 	}
 
 	IEnumerator oneTimeGenerate (float time)
