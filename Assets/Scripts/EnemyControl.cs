@@ -167,7 +167,8 @@ public class EnemyControl : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == "Player") {
-			other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
+			if (PlayerPrefs.GetInt ("FrostRing", 0) != 2 || !freezee)
+				other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
 			if (!other.gameObject.GetComponentInParent<PlayerControl> ().isInvincible ())
 				TakeDamage (Health + 10);
 			else

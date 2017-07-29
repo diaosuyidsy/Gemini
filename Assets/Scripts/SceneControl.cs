@@ -26,6 +26,8 @@ public class SceneControl : MonoBehaviour
 	public GameObject TDDialogue8;
 	public Text TDDialogue8Text;
 
+	private bool wasPause = false;
+
 	void Awake ()
 	{
 		SC = this;
@@ -47,10 +49,16 @@ public class SceneControl : MonoBehaviour
 		LevelExplainer.SetActive (true);
 		levelParticle.SetActive (false);
 		PlayerPrefs.SetInt ("NeedTouch", 0);
+		if (Time.timeScale == 0f)
+			wasPause = true;
+		Time.timeScale = 0f;
 	}
 
 	public void Up ()
 	{
+		if (!wasPause)
+			Time.timeScale = 1f;
+		wasPause = false;
 		LevelExplainer.SetActive (false);
 		EventManager.TriggerEvent ("ReleaseLevel");
 	}
@@ -117,11 +125,12 @@ public class SceneControl : MonoBehaviour
 	public void TouchedLevel ()
 	{
 		TDDialogue6.SetActive (false);
-		Time.timeScale = 1f;
+
 	}
 
 	public void GoodToGo (bool open)
 	{
+		Time.timeScale = 1f;
 		TDDialogue7.SetActive (open);
 	}
 
@@ -139,12 +148,7 @@ public class SceneControl : MonoBehaviour
 
 	public void DestroOrbIntro ()
 	{
-		TDDialogue8Text.text = "Another Type of Special Orb is Destruction Orb(Purple One)";
-	}
-
-	public void DestroOrbIntro2 ()
-	{
-		TDDialogue8Text.text = "That takes 3 hits to eliminate";
+		TDDialogue8Text.text = "Destruction Orb(Purple One) takes 3 hits to eliminate";
 	}
 
 	public void DoneIntroOrbs ()

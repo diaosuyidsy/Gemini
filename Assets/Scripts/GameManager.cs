@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 		FilledLevel.fillAmount = currentXP / XPpool;
 
 		if (level < 1) {
-			Debug.Log ("Heelo");
 			HealthCircle.SetActive (false);
 		}
 		setupLevelText (level);

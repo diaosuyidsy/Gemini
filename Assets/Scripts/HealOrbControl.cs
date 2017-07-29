@@ -9,9 +9,14 @@ public class HealOrbControl : MonoBehaviour
 	public float RotateSpeed = 5f;
 	public GameObject ExplosionEffectPrefab;
 
+	//	private Vector3 PlayerPosition;
+	//	private Vector3 MovingPoint;
+
 
 	void Start ()
 	{
+//		PlayerPosition = GameObject.Find ("Player").GetComponent<PlayerControl> ().Main.transform.position;
+//		MovingPoint = (PlayerPosition - transform.position).normalized;
 		StartCoroutine (selfDestruct (selfDestructTime));
 	}
 
@@ -27,6 +32,7 @@ public class HealOrbControl : MonoBehaviour
 	{
 		transform.position = Vector3.MoveTowards (transform.position, Vector3.zero, MoveSpeed * Time.deltaTime);
 		transform.RotateAround (Vector3.zero, Vector3.forward, RotateSpeed * Time.deltaTime);
+//		transform.Translate (MovingPoint * Time.deltaTime * MoveSpeed);
 	}
 
 	public void Absorb ()
@@ -39,6 +45,9 @@ public class HealOrbControl : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.SendMessageUpwards ("ApplyDamage", -1 * PlayerPrefs.GetInt ("HealAmount", 1));
+			Absorb ();
+		}
+		if (other.gameObject.tag == "DZ") {
 			Absorb ();
 		}
 	}
