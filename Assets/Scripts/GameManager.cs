@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 	private float XPpool;
 	private float currentXP;
 	private string[] XPpoolstr;
+	public int comboCounter = -1;
 
 	void Awake ()
 	{
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
 		} else {
 			levelParticle.SetActive (false);
 		}
+		comboCounter = 0;
 	}
 
 	public void Restart ()
@@ -112,14 +114,14 @@ public class GameManager : MonoBehaviour
 
 	public void Tryscore (int num)
 	{
-		score += num;
+		score += (num * comboCounter > 0 ? comboCounter : 1);
 		Score.text = score.ToString ();
 		AddXP (num);
 	}
 
 	void AddXP (int num)
 	{
-		currentXP += (num * 10);
+		currentXP += (num * 10 * comboCounter > 0 ? comboCounter : 1);
 		if (currentXP >= XPpool) {
 			// Level UP	
 			LevelUP ();

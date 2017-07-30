@@ -102,28 +102,43 @@ public class PlayerControl : MonoBehaviour
 						switch (turn) {
 						case 0:
 							Main = null;
-							if (invincibleAble)
+							if (invincibleAble) {
 								invincible = true;
+								foreach (GameObject invicibleeffe in InvincibleEffect) {
+									invicibleeffe.SetActive (true);
+								}
+							}
+
 							Black.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 							turn = (turn + 1) % 4;
 							break;
 						case 1:
 							Main = White;
 							invincible = false;
+							foreach (GameObject invicibleeffe in InvincibleEffect) {
+								invicibleeffe.SetActive (false);
+							}
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 							Black.GetComponent<Gemini> ().ApplyBurstForce (5000f);
 							turn = (turn + 1) % 4;
 							break;
 						case 2:
 							Main = null;
-							if (invincibleAble)
+							if (invincibleAble) {
 								invincible = true;
+								foreach (GameObject invicibleeffe in InvincibleEffect) {
+									invicibleeffe.SetActive (true);
+								}
+							}
 							White.GetComponent<Rigidbody2D> ().constraints = RigidbodyConstraints2D.None;
 							turn = (turn + 1) % 4;
 							break;
 						case 3:
 							Main = Black;
 							invincible = false;
+							foreach (GameObject invicibleeffe in InvincibleEffect) {
+								invicibleeffe.SetActive (false);
+							}
 							Black.GetComponent<Rigidbody2D > ().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 							White.GetComponent<Gemini> ().ApplyBurstForce (5000f);
 							turn = (turn + 1) % 4;
@@ -144,9 +159,9 @@ public class PlayerControl : MonoBehaviour
 	{
 		RaycastHit2D[] hits = Physics2D.LinecastAll (Black.transform.position, White.transform.position);
 		foreach (RaycastHit2D hit in hits) {
-			if (hit.collider != null && hit.collider.gameObject.tag == "Enemy")
+			if (hit.collider != null && hit.collider.gameObject.tag == "Enemy") {
 				hit.collider.gameObject.SendMessage ("TakeDamage", 1);
-			else if (hit.collider != null && hit.collider.gameObject.tag == "HealOrb") {
+			} else if (hit.collider != null && hit.collider.gameObject.tag == "HealOrb") {
 				ApplyDamage (-1 * PlayerPrefs.GetInt ("HealAmount", 1));
 				hit.collider.gameObject.SendMessage ("Absorb");
 			}

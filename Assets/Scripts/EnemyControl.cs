@@ -105,7 +105,38 @@ public class EnemyControl : MonoBehaviour
 			if (Health <= 0) {
 				EventManager.TriggerEvent ("HitEnemy");
 				GameManager.GM.Tryscore (score);
-				ProduceRing ();
+				if (maxHealth != 1)
+					ProduceRing ();
+				makeCombo (true);
+				Destroy (gameObject);
+			}
+		}
+	}
+
+	void makeCombo (bool isCombo)
+	{
+		if (isCombo) {
+			if (GameManager.GM.comboCounter < 5)
+				GameManager.GM.comboCounter++;
+		} else {
+			GameManager.GM.comboCounter = 0;
+		}
+		SceneControl.SC.Combo (GameManager.GM.comboCounter);
+	}
+
+	public void TakeDamageNotComboVersion (int dmg)
+	{
+		if (!damageLock) {
+			damageLock = true;
+			Instantiate (ExplosionEffect, transform.position, Quaternion.identity);
+			StartCoroutine (unlockDamage (0.2f));
+			Health -= dmg;
+			if (Health <= 0) {
+				EventManager.TriggerEvent ("HitEnemy");
+				GameManager.GM.Tryscore (score);
+				if (maxHealth != 1)
+					ProduceRing ();
+				makeCombo (false);
 				Destroy (gameObject);
 			}
 		}
@@ -167,12 +198,14 @@ public class EnemyControl : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == "Player") {
-			if (PlayerPrefs.GetInt ("FrostRing", 0) != 2 || !freezee)
-				other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
-			if (!other.gameObject.GetComponentInParent<PlayerControl> ().isInvincible ())
-				TakeDamage (Health + 10);
-			else
+			// if enemy is froze || player is invincible, do NOT deal damage to player
+			if ((PlayerPrefs.GetInt ("FrostRing", 0) == 2 && freezee) || other.gameObject.GetComponentInParent<PlayerControl> ().isInvincible ()) {
 				TakeDamage (1);
+			} else {
+				// Else deal damage to player and cancel combo
+				other.gameObject.SendMessageUpwards ("ApplyDamage", Health);
+				TakeDamageNotComboVersion (maxHealth + 1);
+			}
 		}
 	}
 }

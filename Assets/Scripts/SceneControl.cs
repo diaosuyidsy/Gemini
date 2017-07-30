@@ -10,6 +10,7 @@ public class SceneControl : MonoBehaviour
 	public static SceneControl SC;
 	public Canvas m_Canvas;
 	public GAui m_Play;
+	public GameObject m_Combo;
 	public GameObject LevelExplainer;
 	public float scaleSpeed;
 	public GameObject levelParticle;
@@ -27,10 +28,17 @@ public class SceneControl : MonoBehaviour
 	public Text TDDialogue8Text;
 
 	private bool wasPause = false;
+	private int lastComboNum = 0;
+	//	private IEnumerator comboco;
 
 	void Awake ()
 	{
 		SC = this;
+	}
+
+	void Start ()
+	{
+//		comboco = comboSelfMoveOut (3);
 	}
 
 	public void GameStart ()
@@ -41,6 +49,45 @@ public class SceneControl : MonoBehaviour
 	public void StartMoveIn ()
 	{
 		m_Play.MoveIn (GSui.eGUIMove.SelfAndChildren);
+	}
+
+	public void Combo (int comboNum)
+	{
+//		StopCoroutine (comboco);
+		m_Combo.GetComponent<Text> ().text = "x" + comboNum.ToString ();
+		switch (comboNum) {
+		case -1:
+		case 0:
+		case 1:
+			m_Combo.GetComponent<Text> ().text = "";
+			m_Combo.GetComponent<GAui> ().MoveOut (GSui.eGUIMove.SelfAndChildren);
+			return;
+		case 2:
+			m_Combo.GetComponent<Text> ().color = Color.white;
+			m_Combo.GetComponent<Text> ().fontSize = 40;
+			break;
+		case 3:
+			m_Combo.GetComponent<Text> ().color = new Color (255f / 255f, 235f / 255f, 0f);
+			m_Combo.GetComponent<Text> ().fontSize = 50;
+			break;
+		case 4:
+			m_Combo.GetComponent<Text> ().color = new Color (255f / 255f, 147f / 255f, 0f);
+			m_Combo.GetComponent<Text> ().fontSize = 60;
+			break;
+		case 5:
+			m_Combo.GetComponent<Text> ().color = new Color (255f / 255f, 75f / 255f, 0f);
+			m_Combo.GetComponent<Text> ().fontSize = 70;
+			break;
+		}
+		m_Combo.GetComponent<GAui> ().MoveIn (GSui.eGUIMove.SelfAndChildren);
+//		StartCoroutine (comboco);
+		lastComboNum = comboNum;
+	}
+
+	IEnumerator comboSelfMoveOut (float time)
+	{
+		yield return new WaitForSeconds (time);
+		m_Combo.GetComponent<GAui> ().MoveOut (GSui.eGUIMove.SelfAndChildren);
 	}
 
 	public void Down ()
