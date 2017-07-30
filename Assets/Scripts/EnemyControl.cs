@@ -52,6 +52,9 @@ public class EnemyControl : MonoBehaviour
 		} else {
 			Health = 3;
 		}
+		if (PlayerPrefs.GetInt ("invincibleOrb", 0) > 0 && rand < 4f * PlayerPrefs.GetInt ("invincibleOrb", 0)) {
+			Health = 4;
+		}
 		if (DemandHealth != 0)
 			Health = DemandHealth;
 		maxHealth = Health;
@@ -156,7 +159,8 @@ public class EnemyControl : MonoBehaviour
 
 	public void freeze (float time)
 	{
-		StartCoroutine (froze (time));
+		if (maxHealth != 4)
+			StartCoroutine (froze (time));
 	}
 
 	IEnumerator froze (float time)
@@ -198,6 +202,11 @@ public class EnemyControl : MonoBehaviour
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.gameObject.tag == "Player") {
+			if (maxHealth == 4) {
+				other.gameObject.SendMessageUpwards ("setInvincibleTime");
+				Destroy (gameObject);
+				return;
+			}
 			// if enemy is froze || player is invincible, do NOT deal damage to player
 			if ((PlayerPrefs.GetInt ("FrostRing", 0) == 2 && freezee) || other.gameObject.GetComponentInParent<PlayerControl> ().isInvincible ()) {
 				TakeDamage (1);

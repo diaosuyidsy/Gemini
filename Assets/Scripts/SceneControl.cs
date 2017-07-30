@@ -10,6 +10,7 @@ public class SceneControl : MonoBehaviour
 	public static SceneControl SC;
 	public Canvas m_Canvas;
 	public GAui m_Play;
+	public GAui m_PlayeImage;
 	public GameObject m_Combo;
 	public GameObject LevelExplainer;
 	public float scaleSpeed;
@@ -44,6 +45,7 @@ public class SceneControl : MonoBehaviour
 	public void GameStart ()
 	{
 		m_Play.MoveOut (GSui.eGUIMove.SelfAndChildren);
+		m_PlayeImage.MoveOut (GSui.eGUIMove.SelfAndChildren);
 	}
 
 	public void StartMoveIn ()
@@ -54,6 +56,8 @@ public class SceneControl : MonoBehaviour
 	public void Combo (int comboNum)
 	{
 //		StopCoroutine (comboco);
+		if (lastComboNum == comboNum)
+			return;
 		m_Combo.GetComponent<Text> ().text = "x" + comboNum.ToString ();
 		switch (comboNum) {
 		case -1:

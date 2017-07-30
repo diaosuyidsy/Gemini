@@ -1,14 +1,15 @@
 1,Duots,Click health bar to release the duots. Reclick to stick,
 2,Elongated Duots I,Increase distance between duots,Duots
 3,Elongated Duots II,Increase distance between duots,Duots;Elongated Duots I
-4,Heal Orb I,Generate Heal Orb randomly that heals 1 Health(Green One),Duots;Elongated Duots II
+4,Heal Orb I,Generate Heal Orb randomly that heals 2 Health(Green One),Duots;Elongated Duots II
 5,Invincible Duots,Duots become invincible when released,Duots;Elongated Duots II;Heal Orb I
 6,Elongated Duots III,Increase distance between duots,Duots;Elongated Duots II;Heal Orb I;Invincible Duots
-7,Heal Orb II,Generate Heal Orb randomly that heals 2 Health,Duots;Elongated Duots III;Heal Orb I;Invincible Duots
+7,Heal Orb II,Generate Heal Orb randomly that heals 3 Health,Duots;Elongated Duots III;Heal Orb I;Invincible Duots
 8,Frost Rings,Frozen Orbs freeze nearby balls upon destroyed,Duots;Elongated Duots III;Heal Orb II;Invincible Duots
 9,Elongated Duots IV,Increase distance between duots,Duots;Elongated Duots III;Heal Orb II;Invincible Duots;Frost Rings
-10,Heal Orb III,Generate Heal Orb randomly that heals 3 Health,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings
-11,Destruction,Destruction Orbs deal damage to nearby balls upon destroyed,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings
-12,Frost Rings II,Frozen Orbs cannot deal damage to Duots,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings;Destruction
-13,Destruction II,Destruction Orbs deal damage to nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction
-N/A,None,You Have Unlocked Every Power of Duots,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings II; Destruction II
+10,Energy Shield,Randomly generate energy shield that makes Duots invincible for a short time,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings
+11,Destruction,Destruction Orbs deal damage to nearby balls upon destroyed,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings;Energy Shield
+12,Frost Rings II,Frozen Orbs cannot deal damage to Duots,Duots;Elongated Duots IV;Heal Orb III;Invincible Duots;Frost Rings;Energy Shield;Destruction;
+13,Destruction II,Destruction Orbs deal damage to nearby balls upon destroyed(Double Range),Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings II;Energy Shield;Destruction
+14,Energy Shield II,Randomly generate energy shield that makes Duots invincible for a long time,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings II;Energy Shield;Destruction
+N/A,None,You Have Unlocked Every Power of Duots,Duots;Elongated Duots IV;Heal Orb II;Invincible Duots;Frost Rings II;Energy ShieldII;Destruction

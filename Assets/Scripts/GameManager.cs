@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
 			break;
 		case 4:
 			PlayerPrefs.SetInt ("SpawnHeal", 1);
-			PlayerPrefs.SetInt ("HealAmount", 1);
+			PlayerPrefs.SetInt ("HealAmount", 2);
 			break;
 		case 5:
 			PlayerPrefs.SetInt ("InvicibleAble", 1);
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
 			White.GetComponent<Gemini> ().setDistanceLonger ();
 			break;
 		case 7:
-			PlayerPrefs.SetInt ("HealAmount", 2);
+			PlayerPrefs.SetInt ("HealAmount", 3);
 			break;
 		case 8:
 			PlayerPrefs.SetInt ("FrostRing", 1);
@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
 			White.GetComponent<Gemini> ().setDistanceLonger ();
 			break;
 		case 10:
-			PlayerPrefs.SetInt ("HealAmount", 3);
+			PlayerPrefs.SetInt ("invincibleOrb", 1);
 			break;
 		case 11:
 			PlayerPrefs.SetInt ("DestructionRing", 1);
@@ -186,6 +186,9 @@ public class GameManager : MonoBehaviour
 			break;
 		case 13:
 			PlayerPrefs.SetInt ("DestructionRing", 2);
+			break;
+		case 14:
+			PlayerPrefs.SetInt ("invincibleOrb", 2);
 			break;
 		default:
 			break;
