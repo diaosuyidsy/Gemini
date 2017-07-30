@@ -114,14 +114,14 @@ public class GameManager : MonoBehaviour
 
 	public void Tryscore (int num)
 	{
-		score += (num * comboCounter > 0 ? comboCounter : 1);
+		score += (num * (comboCounter > 0 ? comboCounter : 1));
 		Score.text = score.ToString ();
 		AddXP (num);
 	}
 
 	void AddXP (int num)
 	{
-		currentXP += (num * 10 * comboCounter > 0 ? comboCounter : 1);
+		currentXP += (num * 10 * (comboCounter > 0 ? comboCounter : 1));
 		if (currentXP >= XPpool) {
 			// Level UP	
 			LevelUP ();
