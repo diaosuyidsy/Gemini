@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 			Debug.Log ("Change Best Score");
 			PlayerPrefs.SetInt ("BestScore", score);
 		}
-		PlayerPrefs.SetInt ("LastScore", score);
+		PlayerPrefs.SetInt ("LastScore", EnemiesSpawner.ES.epoch);
 	}
 
 	public void StartGame ()

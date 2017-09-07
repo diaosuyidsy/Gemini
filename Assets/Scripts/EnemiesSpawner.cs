@@ -13,6 +13,7 @@ public class EnemiesSpawner : MonoBehaviour
 	public int difficulty = 1;
 	public GameObject HealOrbPrefab;
 
+	private int maxEnemy = 9;
 	private bool FirstTimeLock = true;
 
 	void Awake ()
@@ -23,14 +24,12 @@ public class EnemiesSpawner : MonoBehaviour
 	void Start ()
 	{
 		int lastscore = PlayerPrefs.GetInt ("LastScore", 0);
-		if (lastscore < 30) {
-			epoch = lastscore / 2;
-		} else if (epoch >= 30 && epoch < 50) {
-			epoch = 14;
-		} else if (epoch >= 50 && epoch < 70) {
-			epoch = 15 + (epoch - 50) / 2;
+		if (lastscore < 15) {
+			
 		} else {
-			epoch = 25;
+			epoch = lastscore;
+			difficulty = epoch / 15 + 1;
+			maxEnemy += (2 * difficulty);
 		}
 	}
 
@@ -77,18 +76,18 @@ public class EnemiesSpawner : MonoBehaviour
 		yield return new WaitForSeconds (time);
 		int rd = Random.Range (0, SpawnPoints.Length / 2);
 		Instantiate (HealOrbPrefab, SpawnPoints [rd * 2 + 1].position, Quaternion.identity);
-		StartCoroutine (SpawnHealOrb (40f - (difficulty - 1) * 3f));
+		StartCoroutine (SpawnHealOrb (40f));
 	}
 
 	IEnumerator Generate (float time)
 	{
 		yield return new WaitForSeconds (time);
-		if (EnemyParent.childCount < 9) {
+		if (EnemyParent.childCount < maxEnemy) {
 			epoch++;
-			if (epoch == 15)
+			if (epoch % 15 == 0) {
 				difficulty++;
-			if (epoch == 30)
-				difficulty++;
+				maxEnemy += 2;
+			}
 			int rd = Random.Range (0, SpawnPoints.Length);
 			Instantiate (EnemyPrefab, SpawnPoints [rd].position, Quaternion.identity, EnemyParent);
 			if (difficulty == 3) {

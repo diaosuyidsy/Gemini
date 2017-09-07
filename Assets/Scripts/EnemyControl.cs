@@ -64,17 +64,18 @@ public class EnemyControl : MonoBehaviour
 		OrbsEffect [Health - 1].SetActive (true);
 		ExplosionEffect = ExplosionEffectPrefabs [Health - 1];
 		//Setup Speed
-		switch (EnemiesSpawner.ES.difficulty) {
-		case 1:
-			MoveSpeed = randomAround (2.4f, 0.4f);
-			break;
-		case 2:
-			MoveSpeed = randomAround (2.8f, 0.4f);
-			break;
-		case 3: 
-			MoveSpeed = randomAround (3f, 0.4f);
-			break;
-		}
+//		switch (EnemiesSpawner.ES.difficulty) {
+//		case 1:
+//			MoveSpeed = randomAround (2.4f, 0.4f);
+//			break;
+//		case 2:
+//			MoveSpeed = randomAround (4f, 0.7f);
+//			break;
+//		case 3: 
+//			MoveSpeed = randomAround (6f, 1f);
+//			break;
+//		}
+		MoveSpeed = randomAround (4f, 1f);
 	}
 
 	float randomAround (float target, float range)
@@ -95,6 +96,8 @@ public class EnemyControl : MonoBehaviour
 		if (Vector3.Distance (transform.position, playerPos) >= MinDist) {
 			if (!freezee)
 				transform.position += transform.up * MoveSpeed * Time.deltaTime;
+			else
+				transform.position += transform.up * MoveSpeed * Time.deltaTime * 0.7f;
 		}
 	}
 
@@ -104,7 +107,10 @@ public class EnemyControl : MonoBehaviour
 			damageLock = true;
 			Instantiate (ExplosionEffect, transform.position, Quaternion.identity);
 			StartCoroutine (unlockDamage (0.2f));
-			Health -= dmg;
+			if (PlayerPrefs.GetInt ("FrostRing", 0) == 2 && freezee)
+				Health -= maxHealth;
+			else
+				Health -= dmg;
 			if (Health <= 0) {
 				EventManager.TriggerEvent ("HitEnemy");
 				GameManager.GM.Tryscore (score);
@@ -133,7 +139,10 @@ public class EnemyControl : MonoBehaviour
 			damageLock = true;
 			Instantiate (ExplosionEffect, transform.position, Quaternion.identity);
 			StartCoroutine (unlockDamage (0.2f));
-			Health -= dmg;
+			if (PlayerPrefs.GetInt ("FrostRing", 0) == 2 && freezee)
+				Health -= maxHealth;
+			else
+				Health -= dmg;
 			if (Health <= 0) {
 				EventManager.TriggerEvent ("HitEnemy");
 				GameManager.GM.Tryscore (score);
@@ -160,7 +169,8 @@ public class EnemyControl : MonoBehaviour
 	public void freeze (float time)
 	{
 		if (maxHealth != 4)
-			StartCoroutine (froze (time));
+//			StartCoroutine (froze (time));
+			freezee = true;
 	}
 
 	IEnumerator froze (float time)
@@ -174,8 +184,9 @@ public class EnemyControl : MonoBehaviour
 	{
 		int frost = PlayerPrefs.GetInt ("FrostRing", 0);
 		int dest = PlayerPrefs.GetInt ("DestructionRing", 0);
+		Vector3 ringPos = Player.GetComponent<PlayerControl> ().Main == null ? Player.GetComponent<PlayerControl> ().Black.transform.position : Player.GetComponent<PlayerControl> ().Main.transform.position;
 		if (maxHealth == 2 && frost >= 1) {
-			Collider2D[] colliders = Physics2D.OverlapCircleAll (transform.position, 8f * frost);
+			Collider2D[] colliders = Physics2D.OverlapCircleAll (ringPos, 6f * frost);
 			foreach (Collider2D collider in colliders) {
 				if (collider.gameObject.tag == "Enemy") {
 					collider.gameObject.SendMessage ("freeze", 3f);
@@ -183,7 +194,7 @@ public class EnemyControl : MonoBehaviour
 			}
 			Instantiate (ForstRingEffect, transform.position, Quaternion.identity);
 		} else if (maxHealth == 3 && dest >= 1) {
-			Collider2D[] colliders = Physics2D.OverlapCircleAll (transform.position, 4f * dest);
+			Collider2D[] colliders = Physics2D.OverlapCircleAll (ringPos, 4f * dest);
 			foreach (Collider2D collider in colliders) {
 				if (collider.gameObject.tag == "Enemy") {
 					collider.gameObject.SendMessage ("TakeDamage", 1);
